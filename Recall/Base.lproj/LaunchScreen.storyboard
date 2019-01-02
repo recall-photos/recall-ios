@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="w5W-OT-egI">
-                                        <rect key="frame" x="116.66666666666669" y="318" width="142" height="142"/>
+                                        <rect key="frame" x="116" y="335" width="142" height="142"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="142" id="BXw-my-usb"/>
                                             <constraint firstAttribute="height" constant="142" id="Fdt-S5-cHW"/>
@@ -31,7 +31,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.85882352941176465" blue="0.84705882352941175" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="w5W-OT-egI" firstAttribute="centerY" secondItem="gGV-O9-mvR" secondAttribute="centerY" constant="-17" id="Ewf-ER-Drn"/>
+                                    <constraint firstItem="w5W-OT-egI" firstAttribute="centerY" secondItem="gGV-O9-mvR" secondAttribute="centerY" id="Ewf-ER-Drn"/>
                                     <constraint firstItem="w5W-OT-egI" firstAttribute="centerX" secondItem="gGV-O9-mvR" secondAttribute="centerX" id="fQb-K9-Pch"/>
                                 </constraints>
                             </view>
@@ -52,6 +52,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logo" width="142" height="142"/>
+        <image name="logo" width="284" height="284"/>
     </resources>
 </document>

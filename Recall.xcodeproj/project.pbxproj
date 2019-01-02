@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		674C8E44D19F49E49E005103 /* Pods_Recall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF14C7EDE73066A6F6162DC /* Pods_Recall.framework */; };
 		DD40014A21D13CBA00B540C9 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD40014921D13CBA00B540C9 /* PhotosViewController.swift */; };
+		DD7CC47221DD469F0064E625 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7CC47121DD469F0064E625 /* RootViewController.swift */; };
+		DD7CC47421DD47030064E625 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7CC47321DD47030064E625 /* SplashViewController.swift */; };
+		DD7CC47621DD47330064E625 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7CC47521DD47330064E625 /* AuthViewController.swift */; };
 		DDEC269F21CB31770080ACF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEC269E21CB31770080ACF3 /* AppDelegate.swift */; };
 		DDEC26A421CB31770080ACF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDEC26A221CB31770080ACF3 /* Main.storyboard */; };
 		DDEC26A621CB31780080ACF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDEC26A521CB31780080ACF3 /* Assets.xcassets */; };
@@ -39,6 +42,9 @@
 		3EF14C7EDE73066A6F6162DC /* Pods_Recall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Recall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64AE3069769942296B38AC63 /* Pods-Recall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recall.release.xcconfig"; path = "Pods/Target Support Files/Pods-Recall/Pods-Recall.release.xcconfig"; sourceTree = "<group>"; };
 		DD40014921D13CBA00B540C9 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
+		DD7CC47121DD469F0064E625 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		DD7CC47321DD47030064E625 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		DD7CC47521DD47330064E625 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		DDEC269B21CB31770080ACF3 /* Recall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDEC269E21CB31770080ACF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DDEC26A321CB31770080ACF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -96,6 +102,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		DD95FD1321D16201004C5E99 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DD7CC47121DD469F0064E625 /* RootViewController.swift */,
+				DD7CC47321DD47030064E625 /* SplashViewController.swift */,
+				DD7CC47521DD47330064E625 /* AuthViewController.swift */,
+				DD40014921D13CBA00B540C9 /* PhotosViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		DDEC269221CB31770080ACF3 = {
 			isa = PBXGroup;
 			children = (
@@ -121,8 +138,8 @@
 		DDEC269D21CB31770080ACF3 /* Recall */ = {
 			isa = PBXGroup;
 			children = (
+				DD95FD1321D16201004C5E99 /* Controllers */,
 				DDEC269E21CB31770080ACF3 /* AppDelegate.swift */,
-				DD40014921D13CBA00B540C9 /* PhotosViewController.swift */,
 				DDEC26A221CB31770080ACF3 /* Main.storyboard */,
 				DDEC26A521CB31780080ACF3 /* Assets.xcassets */,
 				DDEC26A721CB31780080ACF3 /* LaunchScreen.storyboard */,
@@ -325,6 +342,9 @@
 			files = (
 				DD40014A21D13CBA00B540C9 /* PhotosViewController.swift in Sources */,
 				DDEC269F21CB31770080ACF3 /* AppDelegate.swift in Sources */,
+				DD7CC47621DD47330064E625 /* AuthViewController.swift in Sources */,
+				DD7CC47221DD469F0064E625 /* RootViewController.swift in Sources */,
+				DD7CC47421DD47030064E625 /* SplashViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

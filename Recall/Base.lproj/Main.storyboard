@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Toh-eg-nYB">
-    <device id="retina4_7" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yC1-93-nQJ">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -9,13 +9,18 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Regular.otf">
+            <string>Montserrat-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="So6-ja-zoA">
             <objects>
                 <viewController id="rcH-u0-xp0" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7Qs-dz-Wkp">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="7Es-Fx-NHW"/>
@@ -31,7 +36,7 @@
             <objects>
                 <viewController id="sc8-47-6xU" customClass="PhotosViewController" customModule="Recall" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cTr-mp-NHg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Nht-Um-z2w"/>
@@ -45,7 +50,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="VDF-IW-jtu">
             <objects>
-                <tabBarController id="Toh-eg-nYB" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="mainTabController" id="Toh-eg-nYB" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="H6b-jQ-Dph">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -70,8 +75,99 @@
             </objects>
             <point key="canvasLocation" x="-1558" y="67"/>
         </scene>
+        <!--Auth View Controller-->
+        <scene sceneID="DQe-7W-y6Z">
+            <objects>
+                <viewController storyboardIdentifier="authController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9SH-WW-NFd" customClass="AuthViewController" customModule="Recall" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1kz-0h-z2O">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GaR-Zp-8Xg">
+                                <rect key="frame" x="36.666666666666657" y="679" width="302" height="54"/>
+                                <color key="backgroundColor" red="0.21176470589999999" green="0.47058823529999999" blue="0.69803921570000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="54" id="TZa-L5-xgX"/>
+                                    <constraint firstAttribute="width" constant="302" id="n5O-CF-roR"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
+                                <state key="normal" title="Enter via Blockstack">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginViaBlockstack" destination="9SH-WW-NFd" eventType="touchUpInside" id="SZb-Rp-vQi"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="huZ-Z7-WmK">
+                                <rect key="frame" x="112.66666666666669" y="331" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="Ooi-BV-MLp"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="k5s-0z-MJH"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="mrd-at-D5J"/>
+                                    <constraint firstAttribute="height" constant="150" id="zjP-mt-Mb4"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.85882352941176465" blue="0.84705882352941175" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="huZ-Z7-WmK" firstAttribute="centerX" secondItem="1kz-0h-z2O" secondAttribute="centerX" id="NP3-o9-okC"/>
+                            <constraint firstItem="huZ-Z7-WmK" firstAttribute="centerY" secondItem="1kz-0h-z2O" secondAttribute="centerY" id="OR6-hb-4C0"/>
+                            <constraint firstItem="xeA-P3-XdW" firstAttribute="bottom" secondItem="GaR-Zp-8Xg" secondAttribute="bottom" constant="45" id="XqR-D7-SL7"/>
+                            <constraint firstItem="GaR-Zp-8Xg" firstAttribute="centerX" secondItem="1kz-0h-z2O" secondAttribute="centerX" id="hVp-Ox-lWc"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="xeA-P3-XdW"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Czp-Ay-gUA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1559" y="-675"/>
+        </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="t1m-aM-wcW">
+            <objects>
+                <viewController storyboardIdentifier="splashController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ocf-jK-g0b" customClass="SplashViewController" customModule="Recall" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nlz-oS-5Er">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="fVF-ye-cqR">
+                                <rect key="frame" x="112.66666666666669" y="331" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="MJa-jv-zea"/>
+                                    <constraint firstAttribute="width" constant="150" id="U53-wT-7s8"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.85882352941176465" blue="0.84705882352941175" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="fVF-ye-cqR" firstAttribute="centerY" secondItem="nlz-oS-5Er" secondAttribute="centerY" id="Wvc-Mr-mFP"/>
+                            <constraint firstItem="fVF-ye-cqR" firstAttribute="centerX" secondItem="nlz-oS-5Er" secondAttribute="centerX" id="eht-mj-hE6"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="OXp-yG-VMj"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tcx-t7-7rV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2612" y="66.502463054187189"/>
+        </scene>
+        <!--Root View Controller-->
+        <scene sceneID="uyn-FF-Cpq">
+            <objects>
+                <viewController storyboardIdentifier="rootController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yC1-93-nQJ" customClass="RootViewController" customModule="Recall" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ulG-F7-Fir">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="vVy-CH-vEr"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gwW-a5-dIj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3698" y="67"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="logo" width="284" height="284"/>
         <image name="photo" width="30" height="30"/>
     </resources>
 </document>
