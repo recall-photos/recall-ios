@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1A1E52895841B421CFA9941D3A3781BE"
+               BlueprintIdentifier = "ED9CACA5E0523006DAEA5BAA4A81D562"
                BuildableName = "Blockstack.bundle"
                BlueprintName = "Blockstack-Blockstack"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1A1E52895841B421CFA9941D3A3781BE"
+            BlueprintIdentifier = "ED9CACA5E0523006DAEA5BAA4A81D562"
             BuildableName = "Blockstack.bundle"
             BlueprintName = "Blockstack-Blockstack"
             ReferencedContainer = "container:Pods.xcodeproj">

@@ -16,7 +16,7 @@ class SplashViewController: UIViewController {
         
         print("Fetching blockstack login status")
         
-        if (Blockstack.shared.isSignedIn()) {
+        if (Blockstack.shared.isUserSignedIn()) {
             print("Logged in")
             AppDelegate.shared.rootViewController.switchToMainScreen()
         } else {

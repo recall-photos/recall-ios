@@ -1,7 +1,7 @@
 PODS:
-  - Blockstack (0.2.0):
+  - Blockstack (0.4.0):
     - CryptoSwift
-  - CryptoSwift (0.11.0)
+  - CryptoSwift (0.13.1)
 
 DEPENDENCIES:
   - Blockstack
@@ -12,8 +12,8 @@ SPEC REPOS:
     - CryptoSwift
 
 SPEC CHECKSUMS:
-  Blockstack: 932c786c0d2d317a0b807d7fa3eefd9d59d5aefb
-  CryptoSwift: ad5208dd2aae0a764ea4ce2c2d34bd067cae67f0
+  Blockstack: b81a4d7033e5572823dd220b47acb09c8295bb19
+  CryptoSwift: ff68c35a53e03177d31aaa2c1e8b3e010aeed6cb
 
 PODFILE CHECKSUM: 9aa4b857787870d094b576796a18b22130452eba
 

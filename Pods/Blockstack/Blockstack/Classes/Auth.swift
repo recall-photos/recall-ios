@@ -13,14 +13,14 @@ public enum AuthResult {
     case failed(Error?)
 }
 
-open class Auth {
+class Auth {
     static func makeRequest(transitPrivateKey: String,
                             redirectURLScheme: String,
                             manifestURI: URL,
                             appDomain: URL,
                             appBundleID: String,
-                            scopes: Array<String> = ["store_write"],
-                            expiresAt: Date = Date().addingTimeInterval(TimeInterval(60.0 * 60.0))) -> String {
+                            scopes: Array<String>,
+                            expiresAt: Date) -> String {
         var request: String
         
         let publicKey = Keys.getPublicKeyFromPrivate(transitPrivateKey)
@@ -42,20 +42,17 @@ open class Auth {
             "scopes": scopes
         ]
         
-        let jsonTokens = JSONTokens(algorithm: "ES256K", privateKey: transitPrivateKey)
-        request = jsonTokens.signToken(payload: payload)!
-        
+        request = JSONTokens().signToken(payload: payload, privateKey: transitPrivateKey)!
         return request
     }
     
-    static func decodeResponse(_ authResponse: String, transitPrivateKey: String) -> Token? {
-        let jsonTokens = JSONTokens(algorithm: "ES256K", privateKey: transitPrivateKey)
-        let decodedTokenJsonString = jsonTokens.decodeToken(token: authResponse)
-        var token: Token?
+    static func decodeResponse(_ authResponse: String, transitPrivateKey: String) -> UserDataToken? {
+        let decodedTokenJsonString = JSONTokens().decodeToken(token: authResponse)
+        var token: UserDataToken?
         
         do {
             let jsonDecoder = JSONDecoder()
-            token = try jsonDecoder.decode(Token.self, from: decodedTokenJsonString!.data(using: .utf8)!)
+            token = try jsonDecoder.decode(UserDataToken.self, from: decodedTokenJsonString!.data(using: .utf8)!)
         } catch {
             print("error")
         }
@@ -63,29 +60,28 @@ open class Auth {
         return token
     }
     
-    static func handleAuthResponse(authResponse: String, transitPrivateKey: String, completion: ((AuthResult) -> Void)?) {
+    static func handleAuthResponse(authResponse: String, transitPrivateKey: String, completion: @escaping (AuthResult) -> ()) {
         let response = Auth.decodeResponse(authResponse, transitPrivateKey: transitPrivateKey)
         
-        if var userData = response?.payload {
-            
+        if let userData = response?.payload {
             userData.privateKey = Encryption.decryptPrivateKey(privateKey: transitPrivateKey, hexedEncrypted: userData.privateKey!)
             
             if let profileURL = userData.profileURL {
                 ProfileHelper.fetch(profileURL: URL(string: profileURL)!) { (profile, error) in
                     guard error == nil else {
                         ProfileHelper.storeProfile(profileData: userData)
-                        completion?(AuthResult.success(userData: userData))
+                        completion(AuthResult.success(userData: userData))
                         return
                     }
                     userData.profile = profile
                     ProfileHelper.storeProfile(profileData: userData)
-                    completion?(AuthResult.success(userData: userData))
+                    completion(AuthResult.success(userData: userData))
                 }
             } else {
-                completion?(AuthResult.failed(AuthError.invalidResponse))
+                completion(AuthResult.failed(AuthError.invalidResponse))
             }
         } else {
-            completion?(AuthResult.failed(AuthError.invalidResponse))
+            completion(AuthResult.failed(AuthError.invalidResponse))
         }
     }
 }
