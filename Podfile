@@ -3,4 +3,5 @@ use_frameworks!
 
 target 'Recall' do
   pod 'Blockstack'
+  pod 'GSImageViewerController'
 end

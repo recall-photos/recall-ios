@@ -1,0 +1,6 @@
+framework module GSImageViewerController {
+  umbrella header "GSImageViewerController-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -2,19 +2,23 @@ PODS:
   - Blockstack (0.4.0):
     - CryptoSwift
   - CryptoSwift (0.13.1)
+  - GSImageViewerController (1.5.2)
 
 DEPENDENCIES:
   - Blockstack
+  - GSImageViewerController
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Blockstack
     - CryptoSwift
+    - GSImageViewerController
 
 SPEC CHECKSUMS:
   Blockstack: b81a4d7033e5572823dd220b47acb09c8295bb19
   CryptoSwift: ff68c35a53e03177d31aaa2c1e8b3e010aeed6cb
+  GSImageViewerController: 010a2754686462c3e3085a85005d7c83ba96317e
 
-PODFILE CHECKSUM: 9aa4b857787870d094b576796a18b22130452eba
+PODFILE CHECKSUM: 9a3d41b69eff400c387eb68e60101f83471b1bb2
 
 COCOAPODS: 1.5.3
