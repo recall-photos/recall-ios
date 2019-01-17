@@ -114,7 +114,7 @@ class PhotosViewController: UICollectionViewController {
             let section = self.groupedPhotos[indexPath.section]
             
             let dateFormatterPrint = DateFormatter()
-            dateFormatterPrint.dateFormat = "dd MMM,yyyy"
+            dateFormatterPrint.dateFormat = "dd MMM, yyyy"
             let date = dateFormatterPrint.string(from: section.key)
             
             sectionHeader.sectionHeaderlabel.text = date
