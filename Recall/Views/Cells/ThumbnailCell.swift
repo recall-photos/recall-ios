@@ -13,7 +13,7 @@ class ThumbnailCell: UICollectionViewCell {
     @IBOutlet var imageView : UIImageView!
     
     func setPhoto(photo: Photo) {
-        Blockstack.shared.getFile(at: photo.compressedPhotoPath, decrypt: true, completion: { (compressedImageData, error) in
+        Blockstack.shared.getFile(at: photo.minimalPhotoPath(), decrypt: true, completion: { (compressedImageData, error) in
             if let decryptedImage = (compressedImageData as! DecryptedValue).bytes {
                 let imageData = NSData(bytes: decryptedImage, length: decryptedImage.count)
                 DispatchQueue.main.asyncAfter(deadline: .now(), execute: {

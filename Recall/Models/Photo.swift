@@ -9,13 +9,38 @@
 import Foundation
 
 class Photo {
-    var compressedPhotoPath : String
+    var compressedPhotoPath : String?
+    var photoPath : String?
     var orientation : Int?
     
-    init(compressedPhotoPath: String, orientation: Int?) {
-        self.compressedPhotoPath = compressedPhotoPath
+    init(photoPath: String?, compressedPhotoPath: String?, orientation: Int?) {
+        if let photoPath = photoPath {
+            self.photoPath = photoPath
+        }
+        if let compressedPhotoPath = compressedPhotoPath {
+            self.compressedPhotoPath = compressedPhotoPath
+        }
         if let orientation = orientation {
             self.orientation = orientation
+        }
+    }
+    
+    init(compressedPhotoPath: String?, orientation: Int?) {
+        if let compressedPhotoPath = compressedPhotoPath {
+            self.compressedPhotoPath = compressedPhotoPath
+        }
+        if let orientation = orientation {
+            self.orientation = orientation
+        }
+    }
+    
+    func minimalPhotoPath() -> String {
+        if let compressedPhotoPath = self.compressedPhotoPath {
+            return compressedPhotoPath
+        } else if let photoPath = self.photoPath {
+            return photoPath
+        } else {
+            return ""
         }
     }
 }

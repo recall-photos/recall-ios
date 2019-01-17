@@ -44,9 +44,11 @@ class PhotosViewController: UICollectionViewController {
             if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
                 for parsedPhoto in parsedPhotos {
                     if let photo = parsedPhoto as? Dictionary<String, Any> {
-                        if let compressedPath = photo["compressedPath"] as? String {
-                            self.photos.append(Photo.init(compressedPhotoPath: compressedPath, orientation: photo["orientation"] as? Int))
-                        }
+                        self.photos.append(
+                            Photo.init( photoPath: photo["path"] as? String,
+                                        compressedPhotoPath: photo["compressedPath"] as? String,
+                                        orientation: photo["orientation"] as? Int )
+                        )
                     }
                 }
             }
