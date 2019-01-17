@@ -17,6 +17,7 @@ class PhotosViewController: UICollectionViewController {
 
     private let refreshControl = UIRefreshControl()
     var photos : Array<Photo> = []
+    var groupedPhotos : [(key: Date, value: [Photo])] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,8 @@ class PhotosViewController: UICollectionViewController {
     }
 
     @objc func refreshData(_ sender: Any) {
+        self.photos = []
+        self.groupedPhotos = []
         fetchData()
     }
 
@@ -47,11 +50,18 @@ class PhotosViewController: UICollectionViewController {
                         self.photos.append(
                             Photo.init( photoPath: photo["path"] as? String,
                                         compressedPhotoPath: photo["compressedPath"] as? String,
-                                        orientation: photo["orientation"] as? Int )
+                                        orientation: photo["orientation"] as? Int,
+                                        takenAt: photo["takenAt"] as? Double,
+                                        uploadedAt: photo["uploadedAt"] as? Double )
                         )
                     }
                 }
             }
+            
+            let groupedPhotos = Dictionary(grouping: self.photos, by: { Calendar.current.startOfDay(for: $0.takenAt ?? $0.uploadedAt ?? Date()) })
+            self.groupedPhotos = groupedPhotos.sorted(by: { (first, second) -> Bool in
+                return first.key > second.key
+            })
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 self.collectionView?.reloadData()
@@ -68,16 +78,19 @@ class PhotosViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return self.groupedPhotos.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.photos.count
+        let photos = self.groupedPhotos[section].value
+        return photos.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ThumbnailCell
-        let photo = self.photos[indexPath.row]
+        
+        let photos = self.groupedPhotos[indexPath.section].value
+        let photo = photos[indexPath.row]
         cell.setPhoto(photo: photo)
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(PhotosViewController.openImage(_:)))
@@ -94,6 +107,20 @@ class PhotosViewController: UICollectionViewController {
         let transitionInfo = GSTransitionInfo(fromView: imageView)
         let imageViewer    = GSImageViewerController(imageInfo: imageInfo, transitionInfo: transitionInfo)
         present(imageViewer, animated: true, completion: nil)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "dateHeader", for: indexPath) as? DateHeader {
+            let section = self.groupedPhotos[indexPath.section]
+            
+            let dateFormatterPrint = DateFormatter()
+            dateFormatterPrint.dateFormat = "dd MMM,yyyy"
+            let date = dateFormatterPrint.string(from: section.key)
+            
+            sectionHeader.sectionHeaderlabel.text = date
+            return sectionHeader
+        }
+        return UICollectionReusableView()
     }
 
     // MARK: UICollectionViewDelegate

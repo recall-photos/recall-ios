@@ -41,13 +41,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Bub-z6-jmF">
                             <size key="itemSize" width="125" height="125"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="headerReferenceSize" width="50" height="50"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="photoCell" id="HWW-An-eUj" customClass="ThumbnailCell" customModule="Recall" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
+                                <rect key="frame" x="0.0" y="50" width="125" height="125"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                     <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
@@ -70,6 +70,26 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="dateHeader" id="Kjl-XC-udK" customClass="DateHeader" customModule="Recall" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tAj-SV-WsJ">
+                                    <rect key="frame" x="8" y="13.999999999999998" width="359" height="22.333333333333329"/>
+                                    <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="tAj-SV-WsJ" firstAttribute="centerY" secondItem="Kjl-XC-udK" secondAttribute="centerY" id="FQp-nA-qxv"/>
+                                <constraint firstItem="tAj-SV-WsJ" firstAttribute="leading" secondItem="Kjl-XC-udK" secondAttribute="leadingMargin" id="ebd-t4-2WL"/>
+                                <constraint firstItem="tAj-SV-WsJ" firstAttribute="trailing" secondItem="Kjl-XC-udK" secondAttribute="trailingMargin" id="x8M-BL-okg"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="sectionHeaderlabel" destination="tAj-SV-WsJ" id="LiD-u1-7iL"/>
+                            </connections>
+                        </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="vog-UR-oxG" id="pRd-Dz-zsB"/>
                             <outlet property="delegate" destination="vog-UR-oxG" id="9Mq-dW-Zts"/>

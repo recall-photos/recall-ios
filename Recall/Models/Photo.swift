@@ -12,8 +12,10 @@ class Photo {
     var compressedPhotoPath : String?
     var photoPath : String?
     var orientation : Int?
+    var takenAt : Date?
+    var uploadedAt : Date?
     
-    init(photoPath: String?, compressedPhotoPath: String?, orientation: Int?) {
+    init(photoPath: String?, compressedPhotoPath: String?, orientation: Int?, takenAt: Double? = nil, uploadedAt: Double? = nil) {
         if let photoPath = photoPath {
             self.photoPath = photoPath
         }
@@ -22,6 +24,14 @@ class Photo {
         }
         if let orientation = orientation {
             self.orientation = orientation
+        }
+        if let takenAt = takenAt {
+            let date = Date(timeIntervalSince1970: TimeInterval(takenAt) / 1000)
+            self.takenAt = date
+        }
+        if let uploadedAt = uploadedAt {
+            let date = Date(timeIntervalSince1970: TimeInterval(uploadedAt) / 1000)
+            self.uploadedAt = date
         }
     }
     
