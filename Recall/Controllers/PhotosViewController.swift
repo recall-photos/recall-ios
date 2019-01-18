@@ -45,31 +45,38 @@ class PhotosViewController: UICollectionViewController {
 
     func fetchData() {
         Blockstack.shared.getFile(at: "photos.json", decrypt: true) { (response, error) in
-            let responseString = (response as! DecryptedValue).plainText
-            
-            if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
-                for parsedPhoto in parsedPhotos {
-                    if let photo = parsedPhoto as? Dictionary<String, Any> {
-                        self.photos.append(
-                            Photo.init( photoPath: photo["path"] as? String,
-                                        compressedPhotoPath: photo["compressedPath"] as? String,
-                                        orientation: photo["orientation"] as? Int,
-                                        takenAt: photo["takenAt"] as? Double,
-                                        uploadedAt: photo["uploadedAt"] as? Double )
-                        )
+            if let decryptedResponse = response as? DecryptedValue {
+                let responseString = decryptedResponse.plainText
+                
+                if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
+                    for parsedPhoto in parsedPhotos {
+                        if let photo = parsedPhoto as? Dictionary<String, Any> {
+                            self.photos.append(
+                                Photo.init( photoPath: photo["path"] as? String,
+                                            compressedPhotoPath: photo["compressedPath"] as? String,
+                                            orientation: photo["orientation"] as? Int,
+                                            takenAt: photo["takenAt"] as? Double,
+                                            uploadedAt: photo["uploadedAt"] as? Double )
+                            )
+                        }
                     }
                 }
+                
+                let groupedPhotos = Dictionary(grouping: self.photos, by: { Calendar.current.startOfDay(for: $0.takenAt ?? $0.uploadedAt ?? Date()) })
+                self.groupedPhotos = groupedPhotos.sorted(by: { (first, second) -> Bool in
+                    return first.key > second.key
+                })
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                    self.collectionView?.reloadData()
+                    self.refreshControl.endRefreshing()
+                })
+            } else {
+                // Could not fetch photos.json file
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                    self.refreshControl.endRefreshing()
+                })
             }
-            
-            let groupedPhotos = Dictionary(grouping: self.photos, by: { Calendar.current.startOfDay(for: $0.takenAt ?? $0.uploadedAt ?? Date()) })
-            self.groupedPhotos = groupedPhotos.sorted(by: { (first, second) -> Bool in
-                return first.key > second.key
-            })
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                self.collectionView?.reloadData()
-                self.refreshControl.endRefreshing()
-            })
         }
     }
 
