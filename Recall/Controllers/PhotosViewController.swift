@@ -10,6 +10,7 @@ import UIKit
 import Blockstack
 import GSImageViewerController
 import AVFoundation
+import Photos
 
 private let reuseIdentifier = "photoCell"
 
@@ -28,6 +29,8 @@ class PhotosViewController: UICollectionViewController {
             self.collectionView?.addSubview(self.refreshControl)
         }
         refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
+        
+        self.checkAuthorizationForPhotoLibraryAndGet()
 
         self.collectionView?.setContentOffset(CGPoint(x: 0, y: -80.0), animated: true)
         self.refreshControl.beginRefreshing()
@@ -153,5 +156,31 @@ class PhotosViewController: UICollectionViewController {
 
      }
      */
+    
+    private func getPhotosAndVideos() {
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        fetchOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+        let images = PHAsset.fetchAssets(with: fetchOptions)
+        print(images.count)
+    }
+    
+    private func checkAuthorizationForPhotoLibraryAndGet() {
+        let status = PHPhotoLibrary.authorizationStatus()
+        
+        if (status == PHAuthorizationStatus.authorized) {
+            // Access has been granted.
+            getPhotosAndVideos()
+        }else {
+            PHPhotoLibrary.requestAuthorization({ (newStatus) in
+                
+                if (newStatus == PHAuthorizationStatus.authorized) {
+                    self.getPhotosAndVideos()
+                } else {
+                    
+                }
+            })
+        }
+    }
 
 }
