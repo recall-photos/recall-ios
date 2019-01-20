@@ -13,26 +13,28 @@ class ThumbnailCell: UICollectionViewCell {
     @IBOutlet var imageView : UIImageView!
     
     func setPhoto(photo: Photo) {
-        Blockstack.shared.getFile(at: photo.minimalPhotoPath(), decrypt: true, completion: { (compressedImageData, error) in
-            if let decryptedImage = (compressedImageData as! DecryptedValue).bytes {
-                let imageData = NSData(bytes: decryptedImage, length: decryptedImage.count)
-                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-                    var image = UIImage(data: imageData as Data)
-                    if photo.orientation == 2 || photo.orientation == 4 || photo.orientation == 5 || photo.orientation == 7 {
-                        image = image?.imageRotatedByDegrees(degrees: 0, flip: true)
-                    }
-                    if photo.orientation == 3 || photo.orientation == 4 {
-                        image = image?.imageRotatedByDegrees(degrees: 180, flip: false)
-                    }
-                    if photo.orientation == 7 || photo.orientation == 8 {
-                        image = image?.imageRotatedByDegrees(degrees: 90, flip: false)
-                    }
-                    if photo.orientation == 5 || photo.orientation == 6 {
-                        image = image?.imageRotatedByDegrees(degrees: 270, flip: false)
-                    }
-                    
-                    self.imageView.image = image
-                })
+        Blockstack.shared.getFile(at: photo.minimalPhotoPath(), decrypt: true, completion: { (imageData, error) in
+            if let decryptedResponse = imageData as? DecryptedValue {
+                if let decryptedImage = decryptedResponse.bytes {
+                    let imageData = NSData(bytes: decryptedImage, length: decryptedImage.count)
+                    DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                        var image = UIImage(data: imageData as Data)
+                        if photo.orientation == 2 || photo.orientation == 4 || photo.orientation == 5 || photo.orientation == 7 {
+                            image = image?.imageRotatedByDegrees(degrees: 0, flip: true)
+                        }
+                        if photo.orientation == 3 || photo.orientation == 4 {
+                            image = image?.imageRotatedByDegrees(degrees: 180, flip: false)
+                        }
+                        if photo.orientation == 7 || photo.orientation == 8 {
+                            image = image?.imageRotatedByDegrees(degrees: 90, flip: false)
+                        }
+                        if photo.orientation == 5 || photo.orientation == 6 {
+                            image = image?.imageRotatedByDegrees(degrees: 270, flip: false)
+                        }
+                        
+                        self.imageView.image = image
+                    })
+                }
             }
         })
     }
