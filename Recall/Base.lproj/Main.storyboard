@@ -31,6 +31,22 @@
             </objects>
             <point key="canvasLocation" x="-605" y="399"/>
         </scene>
+        <!--Upload-->
+        <scene sceneID="Wc5-zO-k3j">
+            <objects>
+                <viewController id="aM6-Yl-7Qb" customClass="UploadPhotoViewController" customModule="Recall" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="naa-Zv-OOH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="4BA-rr-PaE"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Upload" id="GHh-aT-qXh"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="24s-YK-oMk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="217" y="95"/>
+        </scene>
         <!--Photos-->
         <scene sceneID="dnJ-VR-BrP">
             <objects>
@@ -122,6 +138,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="vog-UR-oxG" kind="relationship" relationship="viewControllers" id="S1X-R4-2z7"/>
+                        <segue destination="aM6-Yl-7Qb" kind="relationship" relationship="viewControllers" id="xRM-5a-yXX"/>
                         <segue destination="rcH-u0-xp0" kind="relationship" relationship="viewControllers" id="Meu-tw-lM9"/>
                     </connections>
                 </tabBarController>

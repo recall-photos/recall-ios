@@ -3,22 +3,34 @@ PODS:
     - CryptoSwift
   - CryptoSwift (0.13.1)
   - GSImageViewerController (1.5.2)
+  - PryntTrimmerView (3.0.0)
+  - SteviaLayout (4.4.3)
+  - YPImagePicker (3.5.3):
+    - PryntTrimmerView (~> 3.0.0)
+    - SteviaLayout (~> 4.4.1)
 
 DEPENDENCIES:
   - Blockstack
   - GSImageViewerController
+  - YPImagePicker
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Blockstack
     - CryptoSwift
     - GSImageViewerController
+    - PryntTrimmerView
+    - SteviaLayout
+    - YPImagePicker
 
 SPEC CHECKSUMS:
   Blockstack: b81a4d7033e5572823dd220b47acb09c8295bb19
   CryptoSwift: ff68c35a53e03177d31aaa2c1e8b3e010aeed6cb
   GSImageViewerController: 010a2754686462c3e3085a85005d7c83ba96317e
+  PryntTrimmerView: 53ac64053c7ce63cb3e27f54090f52da0734891d
+  SteviaLayout: ae5ee66101e03607a93c9b3773b84ab7ba7b3d17
+  YPImagePicker: 5dd3814b47b1208e9c8cc8f6ef77fe90db3723b6
 
-PODFILE CHECKSUM: 9a3d41b69eff400c387eb68e60101f83471b1bb2
+PODFILE CHECKSUM: 29542bb4adb9952915d5d422758b5b5de1ab7302
 
 COCOAPODS: 1.5.3
