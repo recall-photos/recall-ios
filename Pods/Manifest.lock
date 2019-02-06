@@ -5,6 +5,7 @@ PODS:
   - GSImageViewerController (1.5.2)
   - PryntTrimmerView (3.0.0)
   - SteviaLayout (4.4.3)
+  - SVProgressHUD (2.2.5)
   - YPImagePicker (3.5.3):
     - PryntTrimmerView (~> 3.0.0)
     - SteviaLayout (~> 4.4.1)
@@ -12,6 +13,7 @@ PODS:
 DEPENDENCIES:
   - Blockstack
   - GSImageViewerController
+  - SVProgressHUD
   - YPImagePicker
 
 SPEC REPOS:
@@ -21,6 +23,7 @@ SPEC REPOS:
     - GSImageViewerController
     - PryntTrimmerView
     - SteviaLayout
+    - SVProgressHUD
     - YPImagePicker
 
 SPEC CHECKSUMS:
@@ -29,8 +32,9 @@ SPEC CHECKSUMS:
   GSImageViewerController: 010a2754686462c3e3085a85005d7c83ba96317e
   PryntTrimmerView: 53ac64053c7ce63cb3e27f54090f52da0734891d
   SteviaLayout: ae5ee66101e03607a93c9b3773b84ab7ba7b3d17
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   YPImagePicker: 5dd3814b47b1208e9c8cc8f6ef77fe90db3723b6
 
-PODFILE CHECKSUM: 29542bb4adb9952915d5d422758b5b5de1ab7302
+PODFILE CHECKSUM: 6b1e2e427d0ae8e9144ddfebe9dc90e782f181e4
 
 COCOAPODS: 1.5.3

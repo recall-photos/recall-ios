@@ -5,4 +5,5 @@ target 'Recall' do
   pod 'Blockstack'
   pod 'GSImageViewerController'
   pod 'YPImagePicker'
+  pod 'SVProgressHUD'
 end

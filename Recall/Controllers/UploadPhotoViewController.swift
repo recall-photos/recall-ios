@@ -8,6 +8,8 @@
 
 import UIKit
 import YPImagePicker
+import Blockstack
+import SVProgressHUD
 
 class UploadPhotoViewController: UIViewController {
     override func viewDidLoad() {
@@ -39,10 +41,60 @@ class UploadPhotoViewController: UIViewController {
         let picker = YPImagePicker(configuration: config)
         picker.didFinishPicking { [unowned picker] items, _ in
             if let photo = items.singlePhoto {
-                
+                self.upload(photo: photo)
             }
             picker.dismiss(animated: true, completion: nil)
         }
         present(picker, animated: true, completion: nil)
+    }
+    
+    func upload(photo : YPMediaPhoto) {
+        if let imageData = photo.image.jpeg(.lowest) {
+            let bytes = imageData.bytes
+            
+            let imageName = "mobileUpload.jpg"
+            
+            SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.clear)
+            SVProgressHUD.show()
+            
+            Blockstack.shared.getFile(at: "photos.json", decrypt: true, completion: { (response, error) in
+                if let decryptedResponse = response as? DecryptedValue {
+                    let responseString = decryptedResponse.plainText
+                    
+                    if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
+                        var photosArray = parsedPhotos as! Array<NSDictionary>
+                        
+                        Blockstack.shared.putFile(to: "compressed_images/\(imageName)", bytes: bytes, encrypt: true, completion: { (file, error) in
+                            Blockstack.shared.putFile(to: "images/\(imageName)", bytes: bytes, encrypt: true, completion: { (file, error) in
+                                let newPhoto = [
+                                    "path": "images/\(imageName)",
+                                    "uploadedAt": Date().millisecondsSince1970,
+                                    "uuid": "1234",
+                                    "compressedPath": "compressed_images/\(imageName)",
+                                    "name": imageName
+                                ] as NSDictionary
+                                
+                                photosArray.append(newPhoto)
+                                
+                                Blockstack.shared.putFile(to: "photos.json", text: self.json(from: photosArray)!, encrypt: true, completion: { (file, error) in
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                        SVProgressHUD.dismiss()
+                                        print("Uploaded photo")
+                                    })
+                                })
+                            })
+                        })
+                        
+                    }
+                }
+            })
+        }
+    }
+    
+    func json(from object:Any) -> String? {
+        guard let data = try? JSONSerialization.data(withJSONObject: object, options: []) else {
+            return nil
+        }
+        return String(data: data, encoding: String.Encoding.utf8)
     }
 }

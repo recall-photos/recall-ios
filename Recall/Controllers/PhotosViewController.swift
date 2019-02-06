@@ -28,18 +28,16 @@ class PhotosViewController: UICollectionViewController {
         } else {
             self.collectionView?.addSubview(self.refreshControl)
         }
-        refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshPhotos(_:)), for: .valueChanged)
         
-        self.checkAuthorizationForPhotoLibraryAndGet()
+//        self.checkAuthorizationForPhotoLibraryAndGet()
 
         self.collectionView?.setContentOffset(CGPoint(x: 0, y: -80.0), animated: true)
         self.refreshControl.beginRefreshing()
         self.fetchData()
     }
 
-    @objc func refreshData(_ sender: Any) {
-        self.photos = []
-        self.groupedPhotos = []
+    @objc func refreshPhotos(_ sender: Any) {
         fetchData()
     }
 
@@ -47,6 +45,8 @@ class PhotosViewController: UICollectionViewController {
         Blockstack.shared.getFile(at: "photos.json", decrypt: true) { (response, error) in
             if let decryptedResponse = response as? DecryptedValue {
                 let responseString = decryptedResponse.plainText
+                
+                self.photos = []
                 
                 if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
                     for parsedPhoto in parsedPhotos {
@@ -62,6 +62,7 @@ class PhotosViewController: UICollectionViewController {
                     }
                 }
                 
+                self.groupedPhotos = []
                 let groupedPhotos = Dictionary(grouping: self.photos, by: { Calendar.current.startOfDay(for: $0.takenAt ?? $0.uploadedAt ?? Date()) })
                 self.groupedPhotos = groupedPhotos.sorted(by: { (first, second) -> Bool in
                     return first.key > second.key
