@@ -31,21 +31,22 @@
             </objects>
             <point key="canvasLocation" x="-605" y="399"/>
         </scene>
-        <!--Upload-->
-        <scene sceneID="Wc5-zO-k3j">
+        <!--Photos-->
+        <scene sceneID="7G7-ar-S0r">
             <objects>
-                <viewController id="aM6-Yl-7Qb" customClass="UploadPhotoViewController" customModule="Recall" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="naa-Zv-OOH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="4BA-rr-PaE"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Upload" image="upload" selectedImage="upload" id="GHh-aT-qXh"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="24s-YK-oMk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController id="3ck-hV-Alw" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Photos" image="photo" selectedImage="photo" id="4Ao-am-Km3"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bNe-rE-Xfs">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="vog-UR-oxG" kind="relationship" relationship="rootViewController" id="R5S-O4-RnW"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t6h-3L-BNa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="217" y="95"/>
+            <point key="canvasLocation" x="-606" y="-259"/>
         </scene>
         <!--Photos-->
         <scene sceneID="dnJ-VR-BrP">
@@ -112,10 +113,18 @@
                         </connections>
                     </collectionView>
                     <tabBarItem key="tabBarItem" title="Photos" image="photo" selectedImage="photo" id="G9L-bk-ZX0"/>
+                    <navigationItem key="navigationItem" id="cev-Ad-zsa">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Sn4-rQ-ta5">
+                            <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="openPhotoPicker" destination="vog-UR-oxG" id="cyw-QV-p6e"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3LM-re-dl3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-607.20000000000005" y="-260.09852216748772"/>
+            <point key="canvasLocation" x="196" y="-259"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="VDF-IW-jtu">
@@ -137,8 +146,7 @@
                         </userDefinedRuntimeAttributes>
                     </tabBar>
                     <connections>
-                        <segue destination="vog-UR-oxG" kind="relationship" relationship="viewControllers" id="S1X-R4-2z7"/>
-                        <segue destination="aM6-Yl-7Qb" kind="relationship" relationship="viewControllers" id="xRM-5a-yXX"/>
+                        <segue destination="3ck-hV-Alw" kind="relationship" relationship="viewControllers" id="NZA-BL-sOS"/>
                         <segue destination="rcH-u0-xp0" kind="relationship" relationship="viewControllers" id="Meu-tw-lM9"/>
                     </connections>
                 </tabBarController>
@@ -240,6 +248,5 @@
     <resources>
         <image name="logo" width="284" height="284"/>
         <image name="photo" width="30" height="30"/>
-        <image name="upload" width="30" height="30"/>
     </resources>
 </document>
