@@ -264,11 +264,8 @@ class PhotosViewController: UICollectionViewController {
                     if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
                         var photosArray = parsedPhotos as! Array<NSDictionary>
                         
-                        print("Start compressed")
                         Blockstack.shared.putFile(to: "compressed_images/\(imageName)", bytes: compressedBytes, encrypt: true, completion: { (file, error) in
-                            print("Start full res")
                             Blockstack.shared.putFile(to: "images/\(imageName)", bytes: bytes, encrypt: true, completion: { (file, error) in
-                                print("Start index")
                                 let newPhoto = [
                                     "path": "images/\(imageName)",
                                     "uploadedAt": Date().millisecondsSince1970,
