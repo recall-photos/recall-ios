@@ -26,7 +26,7 @@ public enum BlockstackConstants {
 
 @objc open class Blockstack: NSObject {
 
-    public static let shared = Blockstack()
+    @objc public static let shared = Blockstack()
     
     var sfAuthSession : SFAuthenticationSession?
 
@@ -125,6 +125,14 @@ public enum BlockstackConstants {
     }
     
     /**
+     Generates a ECDSA keypair and stores the hex value of the private key in local storage.
+     - returns: The hex encoded private key, or nil if key generation failed.
+     */
+    public func generateTransitKey() -> String? {
+        return Keys.makeECPrivateKey()
+    }
+
+    /**
      Retrieves the user data object. The user's profile is stored in the key `profile`.
      */
     public func loadUserData() -> UserData? {
@@ -143,6 +151,13 @@ public enum BlockstackConstants {
      */
     @objc public func signUserOut() {
         ProfileHelper.clearProfile()
+        Gaia.clearSession()
+    }
+    
+    /**
+     Clear Gaia session.
+    */
+    @objc public func clearGaiaSession() {
         Gaia.clearSession()
     }
     
@@ -315,7 +330,6 @@ public enum BlockstackConstants {
             publicKeyOrAddress == compressedAddress {
             // pass
         } else {
-            // TODO: FAIL
             throw NSError.create(description: "Token verification failed")
         }
         
@@ -328,11 +342,64 @@ public enum BlockstackConstants {
         }
         return decodedToken
     }
+
+    /**
+     Validates the social proofs in a user's profile. Currently supports validation of Facebook, Twitter, GitHub, Instagram, LinkedIn and HackerNews accounts.
+     - parameter profile: The Profile to be validated.
+     - parameter ownerAddress: The owner bitcoin address to be validated.
+     - parameter completion: Callback with an array of validated proof objects, or nil if there was an error.
+     */
+    public func validateProofs(profile: Profile, ownerAddress: String, completion: @escaping ([ExternalAccountProof]?) -> ()) {
+        guard let profileData = try? JSONEncoder().encode(profile),
+            let profileJSON = String(data: profileData, encoding: .utf8) else {
+                return
+        }
+        ProfileProofsJS().validateProofs(profile: profileJSON, ownerAddress: ownerAddress, name: nil) { proofs in
+            completion(proofs)
+        }
+    }
     
-    public func validateProofs(profile: Profile, ownerAddress: String) {
+    /**
+     Validates the social proofs in a user's profile. Currently supports validation of Facebook, Twitter, GitHub, Instagram, LinkedIn and HackerNews accounts.
+     - parameter profile: The Profile to be validated.
+     - parameter name: The Blockstack name to be validated
+     - parameter completion: Callback with an array of validated proof objects, or nil if there was an error.
+     */
+    public func validateProofs(profile: Profile, name: String, completion: @escaping ([ExternalAccountProof]?) -> ()) {
+        guard let profileData = try? JSONEncoder().encode(profile),
+            let profileJSON = String(data: profileData, encoding: .utf8) else {
+                return
+        }
+        ProfileProofsJS().validateProofs(profile: profileJSON, ownerAddress: nil, name: name) { proofs in
+            completion(proofs)
+        }
     }
     
     // - MARK: Storage
+    
+    /**
+     Get the app storage bucket URL
+     - parameter gaiaHubURL: The Gaia hub URL.
+     - parameter: appPrivateKey: The app private key used to generate the app address.
+     */
+    @objc public func getAppBucketUrl(gaiaHubURL: URL, appPrivateKey: String, completion: @escaping (String?) -> ()) {
+        guard let privateKey = Blockstack.shared.loadUserData()?.privateKey,
+            let publicKey = Keys.getPublicKeyFromPrivate(privateKey),
+            let challengeSignerAddress = Keys.getAddressFromPublicKey(publicKey) else {
+                return
+        }
+        let task = URLSession.shared.dataTask(with: gaiaHubURL.appendingPathComponent("hub_info")) { data, response, error in
+            guard error == nil,
+                let data = data,
+                let jsonObject = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                let readURLPrefix = (jsonObject as? [String: Any])?["read_url_prefix"] else {
+                    completion(nil)
+                    return
+            }
+            completion("\(readURLPrefix)\(challengeSignerAddress)/")
+        }
+        task.resume()
+    }
     
     /**
      Fetch the public read URL of a user file for the specified app.
@@ -342,7 +409,11 @@ public enum BlockstackConstants {
      - parameter zoneFileLookupURL: The URL to use for zonefile lookup. Defaults to 'http://localhost:6270/v1/names/'.
      - parameter completion: Callback with public read URL of the file, if one was found.
      */
-    @objc public func getUserAppFileURL(at path: String, username: String, appOrigin: String, zoneFileLookupURL: URL = URL(string: "http://localhost:6270/v1/names/")!, completion: @escaping (URL?) -> ()) {
+    @objc public func getUserAppFileURL(at path: String,
+                                        username: String,
+                                        appOrigin: String,
+                                        zoneFileLookupURL: URL = URL(string: "http://localhost:6270/v1/names/")!,
+                                        completion: @escaping (URL?) -> ()) {
         // TODO: Return errors in completion handler
         Blockstack.shared.lookupProfile(username: username, zoneFileLookupURL: zoneFileLookupURL) { profile, error in
             guard error == nil,
@@ -355,7 +426,24 @@ public enum BlockstackConstants {
             completion(url)
         }
     }
-
+    
+    /**
+     List the set of files in this application's Gaia storage bucket.
+     - parameter callback: A callback to invoke on each named file that returns `true` to continue the listing operation or `false` to end it.
+     - parameter completion: Final callback that contains the number of files listed, or any error encountered.
+     */
+    @objc public func listFiles(callback: @escaping (_ filename: String) -> (Bool),
+                                completion: @escaping (_ fileCount: Int, _ error: Error?) -> Void) {
+        Gaia.getOrSetLocalHubConnection() { session, error in
+            guard let session = session, error == nil else {
+                print("gaia connection error")
+                completion(-1, GaiaError.connectionError)
+                return
+            }
+            session.listFilesLoop(page: nil, callCount: 0, fileCount: 0, callback: callback, completion: completion)
+        }
+    }
+    
     /**
      Stores the data provided in the app's data store to to the file specified.
      - parameter to: The path to store the data in
@@ -372,7 +460,21 @@ public enum BlockstackConstants {
                 completion(nil, error)
                 return
             }
-            session.putFile(to: path, content: text, encrypt: encrypt, completion: completion)
+            session.putFile(to: path, content: text, encrypt: encrypt) { url, error in
+                guard error != .configurationError else {
+                    // Retry with a new config
+                    Gaia.setLocalGaiaHubConnection() { session, error in
+                        guard let session = session, error == nil else {
+                            print("gaia connection error upon retry")
+                            completion(nil, error)
+                            return
+                        }
+                        session.putFile(to: path, content: text, encrypt: encrypt, completion: completion)
+                    }
+                    return
+                }
+                completion(url, error)
+            }
         }
     }
     
@@ -392,7 +494,21 @@ public enum BlockstackConstants {
                 completion(nil, error)
                 return
             }
-            session.putFile(to: path, content: bytes, encrypt: encrypt, completion: completion)
+            session.putFile(to: path, content: bytes, encrypt: encrypt) { url, error in
+                guard error != .configurationError else {
+                    // Retry with a new config
+                    Gaia.setLocalGaiaHubConnection() { session, error in
+                        guard let session = session, error == nil else {
+                            print("gaia connection error upon retry")
+                            completion(nil, error)
+                            return
+                        }
+                        session.putFile(to: path, content: bytes, encrypt: encrypt, completion: completion)
+                    }
+                    return
+                }
+                completion(url, error)
+            }
         }
     }
     

@@ -48,6 +48,8 @@ class PhotosViewController: UICollectionViewController {
             if let decryptedResponse = response as? DecryptedValue {
                 let responseString = decryptedResponse.plainText
                 
+                print(responseString)
+                
                 self.photos = []
                 
                 if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
@@ -63,6 +65,8 @@ class PhotosViewController: UICollectionViewController {
                         }
                     }
                 }
+                
+                print(self.photos)
                 
                 self.groupedPhotos = []
                 let groupedPhotos = Dictionary(grouping: self.photos, by: { Calendar.current.startOfDay(for: $0.takenAt ?? $0.uploadedAt ?? Date()) })
@@ -117,10 +121,12 @@ class PhotosViewController: UICollectionViewController {
 
     @objc func openImage(_ sender: AnyObject) {
         let imageView = sender.view! as! UIImageView
-        let imageInfo      = GSImageInfo(image: imageView.image!, imageMode: .aspectFit, imageHD: nil)
-        let transitionInfo = GSTransitionInfo(fromView: imageView)
-        let imageViewer    = GSImageViewerController(imageInfo: imageInfo, transitionInfo: transitionInfo)
-        present(imageViewer, animated: true, completion: nil)
+        if let image = imageView.image {
+            let imageInfo      = GSImageInfo(image: image, imageMode: .aspectFit, imageHD: nil)
+            let transitionInfo = GSTransitionInfo(fromView: imageView)
+            let imageViewer    = GSImageViewerController(imageInfo: imageInfo, transitionInfo: transitionInfo)
+            present(imageViewer, animated: true, completion: nil)
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -229,34 +235,54 @@ class PhotosViewController: UICollectionViewController {
     }
     
     func upload(photo : YPMediaPhoto) {
-        if let imageData = photo.image.jpeg(.lowest) {
+        var takenAt : Date? = nil
+        if let exifMeta = photo.exifMeta {
+            if let tiff = exifMeta["{TIFF}"] as? Dictionary<String, Any> {
+                if let dateTimeString = tiff["DateTime"] as? String {
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
+                    let date = dateFormatter.date(from:dateTimeString)!
+                    takenAt = date
+                }
+            }
+        }
+        
+        if let imageData = photo.image.jpeg(.highest), let compressedImageData = photo.image.jpeg(.lowest) {
             let bytes = imageData.bytes
-            
+            let compressedBytes = compressedImageData.bytes
+
             let uuid = UUID().uuidString
             let imageName = "\(uuid).jpg"
-            
+
             SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.clear)
             SVProgressHUD.show()
-            
+
             Blockstack.shared.getFile(at: "photos.json", decrypt: true, completion: { (response, error) in
                 if let decryptedResponse = response as? DecryptedValue {
                     let responseString = decryptedResponse.plainText
-                    
+
                     if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
                         var photosArray = parsedPhotos as! Array<NSDictionary>
                         
-                        Blockstack.shared.putFile(to: "compressed_images/\(imageName)", bytes: bytes, encrypt: true, completion: { (file, error) in
+                        print("Start compressed")
+                        Blockstack.shared.putFile(to: "compressed_images/\(imageName)", bytes: compressedBytes, encrypt: true, completion: { (file, error) in
+                            print("Start full res")
                             Blockstack.shared.putFile(to: "images/\(imageName)", bytes: bytes, encrypt: true, completion: { (file, error) in
+                                print("Start index")
                                 let newPhoto = [
                                     "path": "images/\(imageName)",
                                     "uploadedAt": Date().millisecondsSince1970,
-                                    "uuid": "1234",
+                                    "uuid": uuid,
                                     "compressedPath": "compressed_images/\(imageName)",
                                     "name": imageName
-                                    ] as NSDictionary
+                                ] as NSMutableDictionary
                                 
+                                if let takenAtDate = takenAt {
+                                    newPhoto.setValue(takenAtDate.millisecondsSince1970, forKey: "takenAt")
+                                }
+
                                 photosArray.append(newPhoto)
-                                
+
                                 Blockstack.shared.putFile(to: "photos.json", text: self.json(from: photosArray)!, encrypt: true, completion: { (file, error) in
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                                         SVProgressHUD.dismiss()
@@ -266,7 +292,7 @@ class PhotosViewController: UICollectionViewController {
                                 })
                             })
                         })
-                        
+
                     }
                 }
             })
