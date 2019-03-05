@@ -105,6 +105,7 @@ class PhotosViewController: UICollectionViewController {
         cell.imageView.image = nil
         let photos = self.groupedPhotos[indexPath.section].value
         let photo = photos[indexPath.row]
+        cell.photo = photo
         cell.setPhoto(photo: photo)
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(PhotosViewController.openImage(_:)))
