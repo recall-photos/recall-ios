@@ -48,8 +48,6 @@ class PhotosViewController: UICollectionViewController {
             if let decryptedResponse = response as? DecryptedValue {
                 let responseString = decryptedResponse.plainText
                 
-                print(responseString)
-                
                 self.photos = []
                 
                 if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
@@ -65,8 +63,6 @@ class PhotosViewController: UICollectionViewController {
                         }
                     }
                 }
-                
-                print(self.photos)
                 
                 self.groupedPhotos = []
                 let groupedPhotos = Dictionary(grouping: self.photos, by: { Calendar.current.startOfDay(for: $0.takenAt ?? $0.uploadedAt ?? Date()) })

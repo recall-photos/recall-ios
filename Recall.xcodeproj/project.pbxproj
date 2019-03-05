@@ -10,7 +10,6 @@
 		674C8E44D19F49E49E005103 /* Pods_Recall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF14C7EDE73066A6F6162DC /* Pods_Recall.framework */; };
 		DD3FA0CC21F1226A00CDC125 /* DateHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3FA0CB21F1226A00CDC125 /* DateHeader.swift */; };
 		DD40014A21D13CBA00B540C9 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD40014921D13CBA00B540C9 /* PhotosViewController.swift */; };
-		DD41EFFF2207B6350064F002 /* UploadPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41EFFE2207B6350064F002 /* UploadPhotoViewController.swift */; };
 		DD4A7D52220AEE7500176539 /* ImageCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4A7D51220AEE7500176539 /* ImageCompression.swift */; };
 		DD4A7D54220AEF2B00176539 /* DateMilliseconds.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4A7D53220AEF2B00176539 /* DateMilliseconds.swift */; };
 		DD4DDC0821E7D9590010A828 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4DDC0721E7D9590010A828 /* Photo.swift */; };
@@ -50,7 +49,6 @@
 		64AE3069769942296B38AC63 /* Pods-Recall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Recall.release.xcconfig"; path = "Pods/Target Support Files/Pods-Recall/Pods-Recall.release.xcconfig"; sourceTree = "<group>"; };
 		DD3FA0CB21F1226A00CDC125 /* DateHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHeader.swift; sourceTree = "<group>"; };
 		DD40014921D13CBA00B540C9 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
-		DD41EFFE2207B6350064F002 /* UploadPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPhotoViewController.swift; sourceTree = "<group>"; };
 		DD4A7D51220AEE7500176539 /* ImageCompression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompression.swift; sourceTree = "<group>"; };
 		DD4A7D53220AEF2B00176539 /* DateMilliseconds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateMilliseconds.swift; sourceTree = "<group>"; };
 		DD4DDC0721E7D9590010A828 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
@@ -156,7 +154,6 @@
 				DD7CC47321DD47030064E625 /* SplashViewController.swift */,
 				DD7CC47521DD47330064E625 /* AuthViewController.swift */,
 				DD40014921D13CBA00B540C9 /* PhotosViewController.swift */,
-				DD41EFFE2207B6350064F002 /* UploadPhotoViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -417,7 +414,6 @@
 				DD4DDC0C21E809460010A828 /* ThumbnailCell.swift in Sources */,
 				DD3FA0CC21F1226A00CDC125 /* DateHeader.swift in Sources */,
 				DD4A7D54220AEF2B00176539 /* DateMilliseconds.swift in Sources */,
-				DD41EFFF2207B6350064F002 /* UploadPhotoViewController.swift in Sources */,
 				DDEC269F21CB31770080ACF3 /* AppDelegate.swift in Sources */,
 				DD7CC47621DD47330064E625 /* AuthViewController.swift in Sources */,
 				DD7CC47221DD469F0064E625 /* RootViewController.swift in Sources */,
@@ -483,7 +479,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -514,7 +510,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -528,7 +524,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -544,7 +540,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -575,7 +571,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -583,7 +579,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
