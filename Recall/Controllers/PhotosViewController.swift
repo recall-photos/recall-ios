@@ -45,6 +45,20 @@ class PhotosViewController: UICollectionViewController {
 
     func fetchData() {
         Blockstack.shared.getFile(at: "photos.json", decrypt: true) { (response, error) in
+            if (error != nil) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                    self.refreshControl.endRefreshing()
+                    
+                    let msg = error?.localizedDescription
+                    let alert = UIAlertController(title: "Error",
+                                                  message: msg,
+                                                  preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                })
+                return
+            }
+            
             if let decryptedResponse = response as? DecryptedValue {
                 let responseString = decryptedResponse.plainText
                 
@@ -255,40 +269,57 @@ class PhotosViewController: UICollectionViewController {
             SVProgressHUD.show()
 
             Blockstack.shared.getFile(at: "photos.json", decrypt: true, completion: { (response, error) in
-                if let decryptedResponse = response as? DecryptedValue {
-                    let responseString = decryptedResponse.plainText
-
-                    if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
-                        var photosArray = parsedPhotos as! Array<NSDictionary>
+                var photosArray : Array<NSDictionary> = []
+                
+                if (response != nil) {
+                    // Populate with latest photos
+                    if let decryptedResponse = response as? DecryptedValue {
+                        let responseString = decryptedResponse.plainText
                         
-                        Blockstack.shared.putFile(to: "compressed_images/\(imageName)", bytes: compressedBytes, encrypt: true, completion: { (file, error) in
-                            Blockstack.shared.putFile(to: "images/\(imageName)", bytes: bytes, encrypt: true, completion: { (file, error) in
-                                let newPhoto = [
-                                    "path": "images/\(imageName)",
-                                    "uploadedAt": Date().millisecondsSince1970,
-                                    "uuid": uuid,
-                                    "compressedPath": "compressed_images/\(imageName)",
-                                    "name": imageName
-                                ] as NSMutableDictionary
-                                
-                                if let takenAtDate = takenAt {
-                                    newPhoto.setValue(takenAtDate.millisecondsSince1970, forKey: "takenAt")
-                                }
-
-                                photosArray.append(newPhoto)
-
-                                Blockstack.shared.putFile(to: "photos.json", text: self.json(from: photosArray)!, encrypt: true, completion: { (file, error) in
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                        SVProgressHUD.dismiss()
-                                        self.fetchData()
-                                        print("Uploaded photo")
-                                    })
-                                })
+                        if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
+                            photosArray = parsedPhotos as! Array<NSDictionary>
+                        }
+                    }
+                } else if (error != nil) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                        SVProgressHUD.dismiss()
+                        
+                        let msg = error?.localizedDescription
+                        let alert = UIAlertController(title: "Error",
+                                                      message: msg,
+                                                      preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        print("Error")
+                    })
+                    return
+                }
+                
+                Blockstack.shared.putFile(to: "compressed_images/\(imageName)", bytes: compressedBytes, encrypt: true, completion: { (file, error) in
+                    Blockstack.shared.putFile(to: "images/\(imageName)", bytes: bytes, encrypt: true, completion: { (file, error) in
+                        let newPhoto = [
+                            "path": "images/\(imageName)",
+                            "uploadedAt": Date().millisecondsSince1970,
+                            "uuid": uuid,
+                            "compressedPath": "compressed_images/\(imageName)",
+                            "name": imageName
+                            ] as NSMutableDictionary
+                        
+                        if let takenAtDate = takenAt {
+                            newPhoto.setValue(takenAtDate.millisecondsSince1970, forKey: "takenAt")
+                        }
+                        
+                        photosArray.append(newPhoto)
+                        
+                        Blockstack.shared.putFile(to: "photos.json", text: self.json(from: photosArray)!, encrypt: true, completion: { (file, error) in
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                SVProgressHUD.dismiss()
+                                self.fetchData()
+                                print("Uploaded photo")
                             })
                         })
-
-                    }
-                }
+                    })
+                })
             })
         }
     }
