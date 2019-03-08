@@ -145,7 +145,7 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Blockstack/Blockstack.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/GSImageViewerController/GSImageViewerController.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DTPhotoViewerController/DTPhotoViewerController.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PryntTrimmerView/PryntTrimmerView.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SteviaLayout/Stevia.framework"
@@ -154,7 +154,7 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Blockstack/Blockstack.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/GSImageViewerController/GSImageViewerController.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DTPhotoViewerController/DTPhotoViewerController.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PryntTrimmerView/PryntTrimmerView.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SteviaLayout/Stevia.framework"

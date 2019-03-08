@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double GSImageViewerControllerVersionNumber;
-FOUNDATION_EXPORT const unsigned char GSImageViewerControllerVersionString[];
+FOUNDATION_EXPORT double DTPhotoViewerControllerVersionNumber;
+FOUNDATION_EXPORT const unsigned char DTPhotoViewerControllerVersionString[];
 

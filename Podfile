@@ -3,7 +3,7 @@ use_frameworks!
 
 target 'Recall' do
   pod 'Blockstack'
-  pod 'GSImageViewerController'
+  pod 'DTPhotoViewerController'
   pod 'YPImagePicker'
   pod 'SVProgressHUD'
 end

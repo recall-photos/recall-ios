@@ -8,7 +8,7 @@
 
 import UIKit
 import Blockstack
-import GSImageViewerController
+import DTPhotoViewerController
 import AVFoundation
 import Photos
 import YPImagePicker
@@ -16,7 +16,7 @@ import SVProgressHUD
 
 private let reuseIdentifier = "photoCell"
 
-class PhotosViewController: UICollectionViewController {
+class PhotosViewController: UICollectionViewController, SimplePhotoViewerControllerDelegate {
 
     private let refreshControl = UIRefreshControl()
     var photos : Array<Photo> = []
@@ -133,10 +133,9 @@ class PhotosViewController: UICollectionViewController {
     @objc func openImage(_ sender: AnyObject) {
         let imageView = sender.view! as! UIImageView
         if let image = imageView.image {
-            let imageInfo      = GSImageInfo(image: image, imageMode: .aspectFit, imageHD: nil)
-            let transitionInfo = GSTransitionInfo(fromView: imageView)
-            let imageViewer    = GSImageViewerController(imageInfo: imageInfo, transitionInfo: transitionInfo)
-            present(imageViewer, animated: true, completion: nil)
+            let photoViewer = SimplePhotoViewerController(referencedView: imageView, image: image)
+            photoViewer.delegate = self
+            present(photoViewer, animated: true, completion: nil)
         }
     }
     
@@ -243,6 +242,10 @@ class PhotosViewController: UICollectionViewController {
             picker.dismiss(animated: true, completion: nil)
         }
         present(picker, animated: true, completion: nil)
+    }
+    
+    func simplePhotoViewerController(_ viewController: SimplePhotoViewerController, savePhoto image: UIImage) {
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
     }
     
     func upload(photo : YPMediaPhoto) {

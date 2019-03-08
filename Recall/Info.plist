@@ -35,6 +35,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Recall would like to access your camera.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Recall would like to save photos to your camera roll.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Recall would like to access your photos.</string>
 	<key>UILaunchStoryboardName</key>
