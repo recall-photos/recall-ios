@@ -8,12 +8,15 @@
 
 import UIKit
 import Blockstack
+import MaterialActivityIndicator
 
 class ThumbnailCell: UICollectionViewCell {
+    var loadingIndicator : MaterialActivityIndicatorView?
     var photo : Photo!
     @IBOutlet var imageView : UIImageView!
     
     func setPhoto(photo: Photo) {
+        self.startLoading()
         Blockstack.shared.getFile(at: photo.minimalPhotoPath(), decrypt: true, completion: { (imageData, error) in
             if (photo.compressedPhotoPath == self.photo.compressedPhotoPath) {
                 if let decryptedResponse = imageData as? DecryptedValue {
@@ -34,12 +37,34 @@ class ThumbnailCell: UICollectionViewCell {
                                 image = image?.imageRotatedByDegrees(degrees: 270, flip: false)
                             }
                             
+                            self.stopLoading()
                             self.imageView.image = image
                         })
                     }
                 }
             }
         })
+    }
+    
+    func startLoading() {
+        if self.loadingIndicator == nil {
+            self.loadingIndicator = MaterialActivityIndicatorView()
+            self.loadingIndicator?.color = UIColor.init(red: 62.0/255.0, green: 54.0/255.0, blue: 132.0/255.0, alpha: 1.0)
+            self.insertSubview(self.loadingIndicator!, belowSubview: self.imageView)
+        }
+        
+        if let indicator = self.loadingIndicator {
+            indicator.frame = CGRect.init(x: self.bounds.width / 2 - 10, y: self.bounds.height / 2 - 10, width: 20, height: 20)
+            indicator.startAnimating()
+        }
+    }
+    
+    func stopLoading() {
+        if let indicator = self.loadingIndicator {
+            indicator.stopAnimating()
+            indicator.removeFromSuperview()
+            self.loadingIndicator = nil
+        }
     }
 }
 

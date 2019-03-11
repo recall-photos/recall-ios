@@ -118,6 +118,7 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ThumbnailCell
         
         cell.imageView.image = nil
+        cell.startLoading()
         let photos = self.groupedPhotos[indexPath.section].value
         let photo = photos[indexPath.row]
         cell.photo = photo

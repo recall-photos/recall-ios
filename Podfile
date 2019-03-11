@@ -6,4 +6,5 @@ target 'Recall' do
   pod 'DTPhotoViewerController'
   pod 'YPImagePicker'
   pod 'SVProgressHUD'
+  pod 'MaterialActivityIndicator'
 end

@@ -3,6 +3,7 @@ PODS:
     - CryptoSwift
   - CryptoSwift (0.14.0)
   - DTPhotoViewerController (1.2.5)
+  - MaterialActivityIndicator (0.0.4)
   - PryntTrimmerView (3.0.0)
   - SteviaLayout (4.4.3)
   - SVProgressHUD (2.2.5)
@@ -13,6 +14,7 @@ PODS:
 DEPENDENCIES:
   - Blockstack
   - DTPhotoViewerController
+  - MaterialActivityIndicator
   - SVProgressHUD
   - YPImagePicker
 
@@ -21,6 +23,7 @@ SPEC REPOS:
     - Blockstack
     - CryptoSwift
     - DTPhotoViewerController
+    - MaterialActivityIndicator
     - PryntTrimmerView
     - SteviaLayout
     - SVProgressHUD
@@ -30,11 +33,12 @@ SPEC CHECKSUMS:
   Blockstack: 4fbd640c3a778a0e87eaedb38394555de75f902d
   CryptoSwift: 35a10419f4dbf0619c13f8c1c180037e115323fa
   DTPhotoViewerController: 369a36bddc3dc2cb67c5423a134111c270917786
+  MaterialActivityIndicator: f5ea8ece4def5fcc658909f381bcefc341e2b99c
   PryntTrimmerView: 53ac64053c7ce63cb3e27f54090f52da0734891d
   SteviaLayout: ae5ee66101e03607a93c9b3773b84ab7ba7b3d17
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   YPImagePicker: 5dd3814b47b1208e9c8cc8f6ef77fe90db3723b6
 
-PODFILE CHECKSUM: 60b18d2ba62154ba960d90230a2b894808afe3de
+PODFILE CHECKSUM: b11d64efc296d232aed96ab4aa123772ef5744e2
 
 COCOAPODS: 1.5.3
