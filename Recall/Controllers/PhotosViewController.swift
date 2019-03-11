@@ -241,16 +241,14 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
             if let index = photosArray.index(of: photo!) {
                 photosArray.remove(at: index)
                 
-                print(photosArray)
-                
                 Blockstack.shared.putFile(to: "photos.json", text: self.json(from: photosArray)!, encrypt: true, completion: { (file, error) in
-                    if let compressedPath = photo?["compressedPath"] {
-                        Blockstack.shared.putFile(to: "compressed_images/\(compressedPath)", bytes: [], encrypt: true, completion: { (file, error) in
+                    if let compressedPath = photo?["compressedPath"] as? String {
+                        Blockstack.shared.putFile(to: compressedPath, bytes: [], encrypt: true, completion: { (file, error) in
                             print("Deleted compressed photo!")
                         })
                     }
-                    if let path = photo?["path"] {
-                        Blockstack.shared.putFile(to: "images/\(path)", bytes: [], encrypt: true, completion: { (file, error) in
+                    if let path = photo?["path"] as? String {
+                        Blockstack.shared.putFile(to: path, bytes: [], encrypt: true, completion: { (file, error) in
                             print("Deleted full-res photo")
                         })
                     }
