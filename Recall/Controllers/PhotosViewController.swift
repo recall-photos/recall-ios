@@ -70,6 +70,7 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
                             self.photos.append(
                                 Photo.init( photoPath: photo["path"] as? String,
                                             compressedPhotoPath: photo["compressedPath"] as? String,
+                                            uuid: photo["uuid"] as? String,
                                             orientation: photo["orientation"] as? Int,
                                             takenAt: photo["takenAt"] as? Double,
                                             uploadedAt: photo["uploadedAt"] as? Double )
@@ -121,20 +122,16 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
         let photo = photos[indexPath.row]
         cell.photo = photo
         cell.setPhoto(photo: photo)
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(PhotosViewController.openImage(_:)))
-        cell.imageView.isUserInteractionEnabled = true
-        cell.imageView.tag = indexPath.row
-        cell.imageView.addGestureRecognizer(tapGestureRecognizer)
 
         return cell
     }
-
-    @objc func openImage(_ sender: AnyObject) {
-        let imageView = sender.view! as! UIImageView
-        if let image = imageView.image {
-            let photoViewer = SimplePhotoViewerController(referencedView: imageView, image: image)
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = self.collectionView.cellForItem(at: indexPath) as! ThumbnailCell
+        if let image = cell.imageView.image {
+            let photoViewer = SimplePhotoViewerController(referencedView: cell.imageView, image: image)
             photoViewer.delegate = self
+            photoViewer.photo = cell.photo
             present(photoViewer, animated: true, completion: nil)
         }
     }
@@ -152,37 +149,6 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
         }
         return UICollectionReusableView()
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-     // Uncomment this method to specify if the specified item should be highlighted during tracking
-     override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-     return true
-     }
-     */
-
-    /*
-     // Uncomment this method to specify if the specified item should be selected
-     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-     return true
-     }
-     */
-
-    /*
-     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-     return false
-     }
-
-     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-     return false
-     }
-
-     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-
-     }
-     */
     
     private func getPhotosAndVideos() {
         let fetchOptions = PHFetchOptions()
@@ -244,8 +210,64 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
         present(picker, animated: true, completion: nil)
     }
     
-    func simplePhotoViewerController(_ viewController: SimplePhotoViewerController, savePhoto image: UIImage) {
+    func simplePhotoViewerController(_ viewController: SimplePhotoViewerController, saveImage image: UIImage) {
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+    }
+    
+    func simplePhotoViewerController(_ viewController: SimplePhotoViewerController, shareImage image: UIImage) {
+        let imageShare = [ image ]
+        let activityViewController = UIActivityViewController(activityItems: imageShare , applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        viewController.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    func simplePhotoViewerController(_ viewController: SimplePhotoViewerController, deletePhoto photo: Photo) {
+        SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.clear)
+        SVProgressHUD.show()
+        
+        Blockstack.shared.getFile(at: "photos.json", decrypt: true, completion: { (response, error) in
+            var photosArray : Array<NSDictionary> = []
+            
+            if let decryptedResponse = response as? DecryptedValue {
+                let responseString = decryptedResponse.plainText
+                
+                if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
+                    photosArray = parsedPhotos as! Array<NSDictionary>
+                }
+            }
+            
+            let photo = photosArray.filter{ ($0["uuid"] as! String) == photo.uuid }.first
+            if let index = photosArray.index(of: photo!) {
+                photosArray.remove(at: index)
+                
+                print(photosArray)
+                
+                Blockstack.shared.putFile(to: "photos.json", text: self.json(from: photosArray)!, encrypt: true, completion: { (file, error) in
+                    if let compressedPath = photo?["compressedPath"] {
+                        Blockstack.shared.putFile(to: "compressed_images/\(compressedPath)", bytes: [], encrypt: true, completion: { (file, error) in
+                            print("Deleted compressed photo!")
+                        })
+                    }
+                    if let path = photo?["path"] {
+                        Blockstack.shared.putFile(to: "images/\(path)", bytes: [], encrypt: true, completion: { (file, error) in
+                            print("Deleted full-res photo")
+                        })
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                        SVProgressHUD.dismiss()
+                        viewController.dismiss(animated: true, completion: nil)
+                        self.fetchData()
+                        print("Deleted photo")
+                    })
+                })
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                    SVProgressHUD.dismiss()
+                    print("Couldn't find photo")
+                })
+            }
+        })
     }
     
     func upload(photo : YPMediaPhoto) {
@@ -306,7 +328,7 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
                             "uuid": uuid,
                             "compressedPath": "compressed_images/\(imageName)",
                             "name": imageName
-                            ] as NSMutableDictionary
+                        ] as NSMutableDictionary
                         
                         if let takenAtDate = takenAt {
                             newPhoto.setValue(takenAtDate.millisecondsSince1970, forKey: "takenAt")

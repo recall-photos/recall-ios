@@ -7,10 +7,15 @@ private var kElementWidth: CGFloat  { return 50 }
 private var kElementBottomMargin: CGFloat  { return 10 }
 
 protocol SimplePhotoViewerControllerDelegate: DTPhotoViewerControllerDelegate {
-    func simplePhotoViewerController(_ viewController: SimplePhotoViewerController, savePhoto image: UIImage)
+    func simplePhotoViewerController(_ viewController: SimplePhotoViewerController, saveImage image: UIImage)
+    func simplePhotoViewerController(_ viewController: SimplePhotoViewerController, shareImage image: UIImage)
+    func simplePhotoViewerController(_ viewController: SimplePhotoViewerController, deletePhoto photo: Photo)
 }
 
 class SimplePhotoViewerController: DTPhotoViewerController {
+    
+    var photo : Photo?
+    
     lazy var moreButton: UIButton = {
         let moreButton = UIButton(frame: CGRect.zero)
         moreButton.setImage(UIImage.moreIcon(size: CGSize(width: 16, height: 16), color: UIColor.white), for: UIControl.State.normal)
@@ -57,16 +62,32 @@ class SimplePhotoViewerController: DTPhotoViewerController {
     @IBAction func moreButtonTapped(_ sender: UIButton) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+        
         let saveButton = UIAlertAction(title: "Save", style: UIAlertAction.Style.default) { (_) in
             // Save photo to Camera roll
-            print("Trying to call delegate")
             if let delegate = self.delegate as? SimplePhotoViewerControllerDelegate {
-                delegate.simplePhotoViewerController(self, savePhoto: self.imageView.image!)
+                delegate.simplePhotoViewerController(self, saveImage: self.imageView.image!)
             }
         }
         alertController.addAction(saveButton)
-        present(alertController, animated: true, completion: nil)
         
+        let shareButton = UIAlertAction(title: "Share", style: UIAlertAction.Style.default) { (_) in
+            // Share photo
+            if let delegate = self.delegate as? SimplePhotoViewerControllerDelegate {
+                delegate.simplePhotoViewerController(self, shareImage: self.imageView.image!)
+            }
+        }
+        alertController.addAction(shareButton)
+        
+        let deleteButton = UIAlertAction(title: "Delete", style: UIAlertAction.Style.destructive) { (_) in
+            // Delete photo
+            if let delegate = self.delegate as? SimplePhotoViewerControllerDelegate {
+                delegate.simplePhotoViewerController(self, deletePhoto: self.photo!)
+            }
+        }
+        alertController.addAction(deleteButton)
+        
+        present(alertController, animated: true, completion: nil)
     }
     
     func hideInfoOverlayView(_ animated: Bool) {

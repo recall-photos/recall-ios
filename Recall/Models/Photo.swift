@@ -11,16 +11,20 @@ import Foundation
 class Photo {
     var compressedPhotoPath : String?
     var photoPath : String?
+    var uuid : String?
     var orientation : Int?
     var takenAt : Date?
     var uploadedAt : Date?
     
-    init(photoPath: String?, compressedPhotoPath: String?, orientation: Int?, takenAt: Double? = nil, uploadedAt: Double? = nil) {
+    init(photoPath: String?, compressedPhotoPath: String?, uuid: String?, orientation: Int?, takenAt: Double? = nil, uploadedAt: Double? = nil) {
         if let photoPath = photoPath {
             self.photoPath = photoPath
         }
         if let compressedPhotoPath = compressedPhotoPath {
             self.compressedPhotoPath = compressedPhotoPath
+        }
+        if let uuid = uuid {
+            self.uuid = uuid
         }
         if let orientation = orientation {
             self.orientation = orientation
