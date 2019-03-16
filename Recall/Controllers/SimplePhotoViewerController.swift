@@ -87,6 +87,11 @@ class SimplePhotoViewerController: DTPhotoViewerController {
         }
         alertController.addAction(deleteButton)
         
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.sourceView = self.view
+            popoverPresentationController.sourceRect = sender.frame
+        }
+        
         present(alertController, animated: true, completion: nil)
     }
     
