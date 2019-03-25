@@ -259,6 +259,131 @@
             </objects>
             <point key="canvasLocation" x="-2612" y="66.502463054187189"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="2D6-cC-kds">
+            <objects>
+                <viewController id="sp4-zJ-Hus" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IGG-SK-eUu">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="rYa-pY-N7R"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dL5-X3-4mv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2536" y="1210"/>
+        </scene>
+        <!--Onboard View Controller-->
+        <scene sceneID="Crj-pt-1jX">
+            <objects>
+                <pageViewController storyboardIdentifier="onboardController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="k0U-WI-ttr" customClass="OnboardViewController" customModule="Recall" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qoP-lu-9iX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-6023" y="-1650"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Pme-y6-Vpu">
+            <objects>
+                <viewController storyboardIdentifier="StepOne" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZlG-rT-RL7" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8v2-IN-kpf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All your photos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QbX-V9-AAB">
+                                <rect key="frame" x="104" y="89" width="167" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="167" id="BqM-hQ-Bft"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StepOne" translatesAutoresizingMaskIntoConstraints="NO" id="i83-UP-G9D">
+                                <rect key="frame" x="62.666666666666657" y="181" width="249.99999999999997" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="XKq-2N-vw8"/>
+                                    <constraint firstAttribute="width" constant="250" id="jfc-Ig-Glt"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recall is the most secure, free, end-to-end encrypted and open-source alternative to Googel Photos." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRC-nd-JUw">
+                                <rect key="frame" x="41" y="481" width="292" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="2zr-y6-aN2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="RRC-nd-JUw" firstAttribute="top" secondItem="i83-UP-G9D" secondAttribute="bottom" constant="50" id="2W2-od-e63"/>
+                            <constraint firstItem="i83-UP-G9D" firstAttribute="top" secondItem="QbX-V9-AAB" secondAttribute="bottom" constant="60" id="4b3-gn-tRk"/>
+                            <constraint firstItem="QbX-V9-AAB" firstAttribute="top" secondItem="AVy-4K-T6V" secondAttribute="top" constant="45" id="Fwm-Pa-5N1"/>
+                            <constraint firstItem="QbX-V9-AAB" firstAttribute="centerX" secondItem="8v2-IN-kpf" secondAttribute="centerX" id="O7Q-g7-vCr"/>
+                            <constraint firstItem="i83-UP-G9D" firstAttribute="centerX" secondItem="8v2-IN-kpf" secondAttribute="centerX" id="czn-hb-0Ge"/>
+                            <constraint firstItem="RRC-nd-JUw" firstAttribute="leading" secondItem="AVy-4K-T6V" secondAttribute="leading" constant="41" id="gAj-1q-Mcv"/>
+                            <constraint firstItem="AVy-4K-T6V" firstAttribute="trailing" secondItem="RRC-nd-JUw" secondAttribute="trailing" constant="42" id="mie-l1-xGS"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="AVy-4K-T6V"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IfM-bo-D15" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4892" y="-1650"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="VhL-yA-8vB">
+            <objects>
+                <viewController storyboardIdentifier="StepTwo" useStoryboardIdentifierAsRestorationIdentifier="YES" id="v0w-6d-SZh" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eWA-hG-EoB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StepTwo" translatesAutoresizingMaskIntoConstraints="NO" id="91V-YQ-7TJ">
+                                <rect key="frame" x="62.666666666666657" y="181" width="249.99999999999997" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="CTi-FZ-BKb"/>
+                                    <constraint firstAttribute="height" constant="250" id="D3w-aD-CFs"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Access your photos safely and securely from everywhere in the world, using your iPhone or web browser." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SGO-zv-EBS">
+                                <rect key="frame" x="41" y="480.99999999999994" width="292" height="88.333333333333314"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="kbK-gU-tF4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Literally everywhere" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NWR-iI-G5P">
+                                <rect key="frame" x="67.666666666666686" y="89" width="240" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="a7Z-WJ-bqL"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="NWR-iI-G5P" firstAttribute="top" secondItem="LUi-Yn-Ovv" secondAttribute="top" constant="45" id="EDQ-1i-wak"/>
+                            <constraint firstItem="LUi-Yn-Ovv" firstAttribute="trailing" secondItem="SGO-zv-EBS" secondAttribute="trailing" constant="42" id="Isl-zo-DXT"/>
+                            <constraint firstItem="SGO-zv-EBS" firstAttribute="top" secondItem="91V-YQ-7TJ" secondAttribute="bottom" constant="50" id="NjQ-A7-9CV"/>
+                            <constraint firstItem="91V-YQ-7TJ" firstAttribute="centerX" secondItem="eWA-hG-EoB" secondAttribute="centerX" id="aDa-2J-4al"/>
+                            <constraint firstItem="91V-YQ-7TJ" firstAttribute="top" secondItem="NWR-iI-G5P" secondAttribute="bottom" constant="60" id="gqt-Q7-ahn"/>
+                            <constraint firstItem="SGO-zv-EBS" firstAttribute="leading" secondItem="LUi-Yn-Ovv" secondAttribute="leading" constant="41" id="gws-Q7-2wx"/>
+                            <constraint firstItem="NWR-iI-G5P" firstAttribute="centerX" secondItem="eWA-hG-EoB" secondAttribute="centerX" id="kEi-Y2-uFL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="LUi-Yn-Ovv"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aWc-Ao-CkV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4098.3999999999996" y="-1650"/>
+        </scene>
         <!--Root View Controller-->
         <scene sceneID="uyn-FF-Cpq">
             <objects>
@@ -274,8 +399,137 @@
             </objects>
             <point key="canvasLocation" x="-3698" y="67"/>
         </scene>
+        <!--Step Four View Controller-->
+        <scene sceneID="VaQ-SF-dtk">
+            <objects>
+                <viewController storyboardIdentifier="StepFour" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1l5-YZ-afK" customClass="StepFourViewController" customModule="Recall" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xaC-MY-lQp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start uploading" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wBz-eK-YPG">
+                                <rect key="frame" x="67.666666666666686" y="89" width="240" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="yin-gP-lGq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StepFour" translatesAutoresizingMaskIntoConstraints="NO" id="N3f-d6-xsf">
+                                <rect key="frame" x="62.666666666666657" y="181" width="249.99999999999997" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="s4e-1W-44k"/>
+                                    <constraint firstAttribute="height" constant="250" id="z65-hA-zDN"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="STD-aI-FNE">
+                                <rect key="frame" x="41" y="481.00000000000006" width="292" height="110.66666666666669"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="6c6-s8-rtn"/>
+                                </constraints>
+                                <string key="text">Currently you need to upload your photos manually within the app. Soon, we will release automatic camera roll uploads in the background.</string>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ov7-96-jF6">
+                                <rect key="frame" x="107" y="626.66666666666663" width="161" height="44"/>
+                                <color key="backgroundColor" red="0.43137254901960786" green="0.22352941176470587" blue="0.72549019607843135" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="VVa-63-Mfu"/>
+                                    <constraint firstAttribute="width" constant="161" id="hFH-wO-6oz"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <state key="normal" title="Get Started">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="getStarted" destination="1l5-YZ-afK" eventType="touchUpInside" id="zU6-M8-fnQ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="wBz-eK-YPG" firstAttribute="top" secondItem="WUY-UF-TaD" secondAttribute="top" constant="45" id="BDb-7o-FzE"/>
+                            <constraint firstItem="STD-aI-FNE" firstAttribute="top" secondItem="N3f-d6-xsf" secondAttribute="bottom" constant="50" id="BmX-Vp-q1J"/>
+                            <constraint firstItem="STD-aI-FNE" firstAttribute="leading" secondItem="WUY-UF-TaD" secondAttribute="leading" constant="41" id="DXh-kX-Ih4"/>
+                            <constraint firstItem="WUY-UF-TaD" firstAttribute="trailing" secondItem="STD-aI-FNE" secondAttribute="trailing" constant="42" id="Xve-Ti-zEo"/>
+                            <constraint firstItem="Ov7-96-jF6" firstAttribute="centerX" secondItem="xaC-MY-lQp" secondAttribute="centerX" id="lIj-mE-3TH"/>
+                            <constraint firstItem="wBz-eK-YPG" firstAttribute="centerX" secondItem="xaC-MY-lQp" secondAttribute="centerX" id="nfR-h3-VrB"/>
+                            <constraint firstItem="N3f-d6-xsf" firstAttribute="centerX" secondItem="xaC-MY-lQp" secondAttribute="centerX" id="qHF-97-een"/>
+                            <constraint firstItem="N3f-d6-xsf" firstAttribute="top" secondItem="wBz-eK-YPG" secondAttribute="bottom" constant="60" id="rJ2-WW-QA5"/>
+                            <constraint firstItem="Ov7-96-jF6" firstAttribute="top" secondItem="STD-aI-FNE" secondAttribute="bottom" constant="35" id="xly-Eb-f67"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="WUY-UF-TaD"/>
+                    </view>
+                    <connections>
+                        <outlet property="cta" destination="Ov7-96-jF6" id="53v-7c-jhY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="39K-UG-AXe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2490.4000000000001" y="-1650"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Fad-sV-5jV">
+            <objects>
+                <viewController storyboardIdentifier="StepThree" useStoryboardIdentifierAsRestorationIdentifier="YES" id="72K-Zl-AZA" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vE2-vP-yf8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StepThree" translatesAutoresizingMaskIntoConstraints="NO" id="qhQ-a5-1yv">
+                                <rect key="frame" x="62.666666666666657" y="181" width="249.99999999999997" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="SUk-Kf-Qdv"/>
+                                    <constraint firstAttribute="width" constant="250" id="hHZ-iH-C5E"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xfp-oI-eqh">
+                                <rect key="frame" x="41" y="481.00000000000006" width="292" height="154.66666666666669"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="32O-AY-aQJ"/>
+                                </constraints>
+                                <string key="text">Recall is powered by Blockstack. 
+Your photos will be uploaded to Blockstack by default, and only your account ID key can access them.  Don’t worry we will redirect you to Blockstack to create your ID.</string>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How does it work?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g4m-SE-gZ0">
+                                <rect key="frame" x="67.666666666666686" y="89" width="240" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="sIp-j8-mrb"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="g4m-SE-gZ0" firstAttribute="top" secondItem="4at-sl-hl7" secondAttribute="top" constant="45" id="G9f-8y-ujw"/>
+                            <constraint firstItem="qhQ-a5-1yv" firstAttribute="centerX" secondItem="vE2-vP-yf8" secondAttribute="centerX" id="HL0-hA-exa"/>
+                            <constraint firstItem="g4m-SE-gZ0" firstAttribute="centerX" secondItem="vE2-vP-yf8" secondAttribute="centerX" id="IFJ-QQ-fpM"/>
+                            <constraint firstItem="qhQ-a5-1yv" firstAttribute="top" secondItem="g4m-SE-gZ0" secondAttribute="bottom" constant="60" id="MNp-LD-e61"/>
+                            <constraint firstItem="4at-sl-hl7" firstAttribute="trailing" secondItem="Xfp-oI-eqh" secondAttribute="trailing" constant="42" id="VZy-CQ-8AE"/>
+                            <constraint firstItem="Xfp-oI-eqh" firstAttribute="leading" secondItem="4at-sl-hl7" secondAttribute="leading" constant="41" id="avR-aK-Z9q"/>
+                            <constraint firstItem="Xfp-oI-eqh" firstAttribute="top" secondItem="qhQ-a5-1yv" secondAttribute="bottom" constant="50" id="mUK-Cn-w79"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="4at-sl-hl7"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I0I-as-2ff" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3292" y="-1650"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="StepFour" width="147" height="230"/>
+        <image name="StepOne" width="204" height="232"/>
+        <image name="StepThree" width="228" height="68"/>
+        <image name="StepTwo" width="216" height="211"/>
         <image name="logo" width="284" height="284"/>
         <image name="photo" width="30" height="30"/>
     </resources>

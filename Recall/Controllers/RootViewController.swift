@@ -20,7 +20,13 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.current = storyboard?.instantiateViewController(withIdentifier: "splashController") as! SplashViewController
+        let defaults = UserDefaults.standard
+        if defaults.bool(forKey: "sawOnboarding") {
+            self.current = storyboard?.instantiateViewController(withIdentifier: "splashController") as! SplashViewController
+        } else {
+            self.current = storyboard?.instantiateViewController(withIdentifier: "onboardController") as! OnboardViewController
+        }
+        
         addChild(current)
         current.view.frame = view.bounds
         view.addSubview(current.view)

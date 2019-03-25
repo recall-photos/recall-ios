@@ -16,6 +16,8 @@
 		DD4A7D54220AEF2B00176539 /* DateMilliseconds.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4A7D53220AEF2B00176539 /* DateMilliseconds.swift */; };
 		DD4DDC0821E7D9590010A828 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4DDC0721E7D9590010A828 /* Photo.swift */; };
 		DD4DDC0C21E809460010A828 /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4DDC0B21E809460010A828 /* ThumbnailCell.swift */; };
+		DD6EF7CB22493E9900B61E73 /* OnboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6EF7CA22493E9900B61E73 /* OnboardViewController.swift */; };
+		DD6EF7CE22495EEE00B61E73 /* StepFourViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6EF7CD22495EEE00B61E73 /* StepFourViewController.swift */; };
 		DD7CC47221DD469F0064E625 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7CC47121DD469F0064E625 /* RootViewController.swift */; };
 		DD7CC47421DD47030064E625 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7CC47321DD47030064E625 /* SplashViewController.swift */; };
 		DD7CC47621DD47330064E625 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7CC47521DD47330064E625 /* AuthViewController.swift */; };
@@ -57,6 +59,8 @@
 		DD4A7D53220AEF2B00176539 /* DateMilliseconds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateMilliseconds.swift; sourceTree = "<group>"; };
 		DD4DDC0721E7D9590010A828 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		DD4DDC0B21E809460010A828 /* ThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
+		DD6EF7CA22493E9900B61E73 /* OnboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
+		DD6EF7CD22495EEE00B61E73 /* StepFourViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepFourViewController.swift; sourceTree = "<group>"; };
 		DD7CC47121DD469F0064E625 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		DD7CC47321DD47030064E625 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		DD7CC47521DD47330064E625 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
@@ -151,15 +155,25 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		DD6EF7CC22495ED000B61E73 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				DD6EF7CD22495EEE00B61E73 /* StepFourViewController.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		DD95FD1321D16201004C5E99 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				DD6EF7CC22495ED000B61E73 /* Onboarding */,
 				DD7CC47121DD469F0064E625 /* RootViewController.swift */,
 				DD7CC47321DD47030064E625 /* SplashViewController.swift */,
 				DD7CC47521DD47330064E625 /* AuthViewController.swift */,
 				DD40014921D13CBA00B540C9 /* PhotosViewController.swift */,
 				DD2FBC512232D3D300AE54D6 /* SimplePhotoViewerController.swift */,
 				DD3D2212223D970A005A3F76 /* MoreTableViewController.swift */,
+				DD6EF7CA22493E9900B61E73 /* OnboardViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -421,6 +435,7 @@
 				DD2FBC522232D3D300AE54D6 /* SimplePhotoViewerController.swift in Sources */,
 				DD4A7D52220AEE7500176539 /* ImageCompression.swift in Sources */,
 				DD4DDC0C21E809460010A828 /* ThumbnailCell.swift in Sources */,
+				DD6EF7CB22493E9900B61E73 /* OnboardViewController.swift in Sources */,
 				DD3FA0CC21F1226A00CDC125 /* DateHeader.swift in Sources */,
 				DD4A7D54220AEF2B00176539 /* DateMilliseconds.swift in Sources */,
 				DDEC269F21CB31770080ACF3 /* AppDelegate.swift in Sources */,
@@ -429,6 +444,7 @@
 				DDEB682721DEAAB4001EF6C4 /* ParseString.swift in Sources */,
 				DD3D2213223D970A005A3F76 /* MoreTableViewController.swift in Sources */,
 				DD7CC47421DD47030064E625 /* SplashViewController.swift in Sources */,
+				DD6EF7CE22495EEE00B61E73 /* StepFourViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
