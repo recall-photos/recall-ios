@@ -305,47 +305,62 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
                         }
                     }
                 } else if (error != nil) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                        SVProgressHUD.dismiss()
-                        
-                        let msg = error?.localizedDescription
-                        let alert = UIAlertController(title: "Error",
-                                                      message: msg,
-                                                      preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
-                        print("Error")
-                    })
-                    return
+                    let msg = error?.localizedDescription
+                    self.triggerErrorWith(title: "Error", content: msg!)
                 }
                 
                 Blockstack.shared.putFile(to: "compressed_images/\(imageName)", bytes: compressedBytes, encrypt: true, completion: { (file, error) in
-                    Blockstack.shared.putFile(to: "images/\(imageName)", bytes: bytes, encrypt: true, completion: { (file, error) in
-                        let newPhoto = [
-                            "path": "images/\(imageName)",
-                            "uploadedAt": Date().millisecondsSince1970,
-                            "uuid": uuid,
-                            "compressedPath": "compressed_images/\(imageName)",
-                            "name": imageName
-                        ] as NSMutableDictionary
-                        
-                        if let takenAtDate = takenAt {
-                            newPhoto.setValue(takenAtDate.millisecondsSince1970, forKey: "takenAt")
-                        }
-                        
-                        photosArray.append(newPhoto)
-                        
-                        Blockstack.shared.putFile(to: "photos.json", text: self.json(from: photosArray)!, encrypt: true, completion: { (file, error) in
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                SVProgressHUD.dismiss()
-                                self.fetchData()
-                                print("Uploaded photo")
-                            })
+                    if (error == nil) {
+                        Blockstack.shared.putFile(to: "images/\(imageName)", bytes: bytes, encrypt: true, completion: { (file, error) in
+                            if (error == nil) {
+                                let newPhoto = [
+                                    "path": "images/\(imageName)",
+                                    "uploadedAt": Date().millisecondsSince1970,
+                                    "uuid": uuid,
+                                    "compressedPath": "compressed_images/\(imageName)",
+                                    "name": imageName
+                                ] as NSMutableDictionary
+                                
+                                if let takenAtDate = takenAt {
+                                    newPhoto.setValue(takenAtDate.millisecondsSince1970, forKey: "takenAt")
+                                }
+                                
+                                photosArray.append(newPhoto)
+                                
+                                Blockstack.shared.putFile(to: "photos.json", text: self.json(from: photosArray)!, encrypt: true, completion: { (file, error) in
+                                    if (error == nil) {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                            SVProgressHUD.dismiss()
+                                            self.fetchData()
+                                            print("Uploaded photo")
+                                        })
+                                    } else {
+                                        self.triggerErrorWith(title: "Failed to upload photo", content: "There was an error uploading your photo. Please try again.")
+                                    }
+                                })
+                            } else {
+                                self.triggerErrorWith(title: "Failed to upload photo", content: "There was an error uploading your photo. Please try again.")
+                            }
                         })
-                    })
+                    } else {
+                        self.triggerErrorWith(title: "Failed to upload photo", content: "There was an error uploading your photo. Please try again.")
+                    }
                 })
             })
         }
+    }
+    
+    func triggerErrorWith(title: String, content: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            SVProgressHUD.dismiss()
+            
+            let alert = UIAlertController(title: title,
+                                          message: content,
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        })
+        return
     }
     
     func json(from object:Any) -> String? {
