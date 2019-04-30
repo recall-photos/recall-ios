@@ -11,12 +11,11 @@ import Blockstack
 import DTPhotoViewerController
 import AVFoundation
 import Photos
-import YPImagePicker
 import SVProgressHUD
 
 private let reuseIdentifier = "photoCell"
 
-class PhotosViewController: UICollectionViewController, SimplePhotoViewerControllerDelegate {
+class PhotosViewController: UICollectionViewController, SimplePhotoViewerControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     private let refreshControl = UIRefreshControl()
     var photos : Array<Photo> = []
@@ -178,37 +177,21 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
     }
     
     @IBAction func openPhotoPicker() {
-        var config = YPImagePickerConfiguration()
-        config.library.mediaType = .photo
-        config.isScrollToChangeModesEnabled = true
-        config.usesFrontCamera = false
-        config.showsFilters = true
-        config.filters = [YPFilter(name: "Normal", applier: nil),
-                          YPFilter(name: "Nashville", applier: YPFilter.nashvilleFilter),
-                          YPFilter(name: "Chrome", coreImageFilterName: "CIPhotoEffectChrome"),
-                          YPFilter(name: "Fade", coreImageFilterName: "CIPhotoEffectFade"),
-                          YPFilter(name: "Instant", coreImageFilterName: "CIPhotoEffectInstant"),
-                          YPFilter(name: "Mono", coreImageFilterName: "CIPhotoEffectMono"),
-                          YPFilter(name: "Noir", coreImageFilterName: "CIPhotoEffectNoir"),
-                          YPFilter(name: "Process", coreImageFilterName: "CIPhotoEffectProcess"),
-                          YPFilter(name: "Transfer", coreImageFilterName: "CIPhotoEffectTransfer"),
-                          YPFilter(name: "Tone", coreImageFilterName: "CILinearToSRGBToneCurve"),
-                          YPFilter(name: "Sepia", coreImageFilterName: "CISepiaTone")]
-        config.startOnScreen = .library
-        config.screens = [.library, .photo]
-        config.showsCrop = .none
-        config.targetImageSize = YPImageSize.original
-        config.hidesStatusBar = false
-        config.hidesBottomBar = false
-        
-        let picker = YPImagePicker(configuration: config)
-        picker.didFinishPicking { [unowned picker] items, _ in
-            if let photo = items.singlePhoto {
-                self.upload(photo: photo)
+        PHPhotoLibrary.requestAuthorization() { status in
+            if status == .authorized {
+                let pickerController = UIImagePickerController()
+                pickerController.delegate = self
+                pickerController.allowsEditing = false
+                pickerController.mediaTypes = ["public.image"]
+                pickerController.sourceType = .photoLibrary
+                self.present(pickerController, animated: true, completion: nil)
             }
-            picker.dismiss(animated: true, completion: nil)
         }
-        present(picker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        self.upload(info: info)
     }
     
     func simplePhotoViewerController(_ viewController: SimplePhotoViewerController, saveImage image: UIImage) {
@@ -269,20 +252,21 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
         })
     }
     
-    func upload(photo : YPMediaPhoto) {
-        var takenAt : Date? = nil
-        if let exifMeta = photo.exifMeta {
-            if let tiff = exifMeta["{TIFF}"] as? Dictionary<String, Any> {
-                if let dateTimeString = tiff["DateTime"] as? String {
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
-                    let date = dateFormatter.date(from:dateTimeString)!
-                    takenAt = date
-                }
-            }
+    func upload(info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.originalImage] as? UIImage else {
+            self.triggerErrorWith(title: "Failed to get photo", content: "There was an error processing your photo. Please try again.")
+            return
         }
         
-        if let imageData = photo.image.jpeg(.highest), let compressedImageData = photo.image.jpeg(.lowest) {
+        var asset: PHAsset?
+        asset = info[.phAsset] as? PHAsset
+        
+        var takenAt : Date? = nil
+        if let asset = asset {
+            takenAt = asset.creationDate
+        }
+        
+        if let imageData = image.jpeg(.highest), let compressedImageData = image.jpeg(.lowest) {
             let bytes = imageData.bytes
             let compressedBytes = compressedImageData.bytes
 
@@ -294,12 +278,12 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
 
             Blockstack.shared.getFile(at: "photos.json", decrypt: true, completion: { (response, error) in
                 var photosArray : Array<NSDictionary> = []
-                
+
                 if (response != nil) {
                     // Populate with latest photos
                     if let decryptedResponse = response as? DecryptedValue {
                         let responseString = decryptedResponse.plainText
-                        
+
                         if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
                             photosArray = parsedPhotos as! Array<NSDictionary>
                         }
@@ -308,7 +292,7 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
                     let msg = error?.localizedDescription
                     self.triggerErrorWith(title: "Error", content: msg!)
                 }
-                
+
                 Blockstack.shared.putFile(to: "compressed_images/\(imageName)", bytes: compressedBytes, encrypt: true, completion: { (file, error) in
                     if (error == nil) {
                         Blockstack.shared.putFile(to: "images/\(imageName)", bytes: bytes, encrypt: true, completion: { (file, error) in
@@ -320,13 +304,13 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
                                     "compressedPath": "compressed_images/\(imageName)",
                                     "name": imageName
                                 ] as NSMutableDictionary
-                                
+
                                 if let takenAtDate = takenAt {
                                     newPhoto.setValue(takenAtDate.millisecondsSince1970, forKey: "takenAt")
                                 }
-                                
+
                                 photosArray.append(newPhoto)
-                                
+
                                 Blockstack.shared.putFile(to: "photos.json", text: self.json(from: photosArray)!, encrypt: true, completion: { (file, error) in
                                     if (error == nil) {
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {

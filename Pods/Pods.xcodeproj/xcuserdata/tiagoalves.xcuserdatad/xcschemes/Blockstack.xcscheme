@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B3B52A257BCFA19A9259C3BBD2C030C7"
+               BlueprintIdentifier = "7C53EA5BAC9C1086BA380D4A22996B94"
+               BuildableName = "Blockstack.framework"
                BlueprintName = "Blockstack"
-               ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "Blockstack.framework">
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

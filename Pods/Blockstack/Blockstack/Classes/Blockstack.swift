@@ -6,16 +6,24 @@
 //
 
 import Foundation
+import AuthenticationServices
 import SafariServices
 import JavaScriptCore
 
 public typealias Bytes = Array<UInt8>
 
+fileprivate var betaBrowserDefaultsKey = "isBetaBrowserEnabled"
+
 public enum BlockstackConstants {
+    public static var BrowserWebAppURL: String {
+        return UserDefaults.standard.bool(forKey: betaBrowserDefaultsKey) ?
+            "https://beta.browser.blockstack.org" :
+        "https://browser.blockstack.org"
+    }
+
     public static let DefaultCoreAPIURL = "https://core.blockstack.org"
-    public static let BrowserWebAppURL = "https://browser.blockstack.org"
-    public static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
-    public static let BrowserWebClearAuthEndpoint = "https://browser.blockstack.org/clear-auth"
+    public static let BrowserWebAppAuthEndpoint = "\(BrowserWebAppURL)/auth"
+    public static let BrowserWebClearAuthEndpoint = "\(BrowserWebAppURL)/clear-auth"
     public static let NameLookupEndpoint = "https://core.blockstack.org/v1/names/"
     public static let AuthProtocolVersion = "1.1.0"
     public static let DefaultGaiaHubURL = "https://hub.blockstack.org"
@@ -24,12 +32,25 @@ public enum BlockstackConstants {
     public static let AppOriginUserDefaultLabel = "BLOCKSTACK_APP_ORIGIN"
 }
 
+/**
+ A class that contains the native swift implementations of Blockstack.js methods and Blockstack network operations.
+ */
 @objc open class Blockstack: NSObject {
 
+    /**
+     A shared instance of Blockstack that exists for the lifetime of your app. Use this instance instead of creating your own.
+     */
     @objc public static let shared = Blockstack()
     
-    var sfAuthSession : SFAuthenticationSession?
-
+    /**
+     Use the latest, beta version of the Blockstack browser (https://beta.browser.blockstack.org) for authentication.
+    */
+    @objc public var isBetaBrowserEnabled = false {
+        didSet {
+            UserDefaults.standard.set(self.isBetaBrowserEnabled, forKey: betaBrowserDefaultsKey)
+        }
+    }
+    
     // - MARK: Authentication
     
     /**
@@ -41,10 +62,10 @@ public enum BlockstackConstants {
      - parameter completion: Callback with an AuthResult object.
      */
     public func signIn(redirectURI: String,
-                    appDomain: URL,
-                     manifestURI: URL? = nil,
-                     scopes: Array<String> = ["store_write"],
-                     completion: @escaping (AuthResult) -> ()) {
+                       appDomain: URL,
+                       manifestURI: URL? = nil,
+                       scopes: Array<String> = ["store_write"],
+                       completion: @escaping (AuthResult) -> ()) {
         print("signing in")
         
         guard let transitKey = Keys.makeECPrivateKey() else {
@@ -66,16 +87,18 @@ public enum BlockstackConstants {
         var urlComps = URLComponents(string: BlockstackConstants.BrowserWebAppAuthEndpoint)!
         urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest), URLQueryItem(name: "client", value: "ios_secure")]
         let url = urlComps.url!
-        
-        // TODO: Use ASWebAuthenticationSession for iOS 12
-        var responded = false
-        self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURI) { (url, error) in
-            guard !responded else {
+
+        var didRespond = false
+        let completion: (URL?, Error?) -> () = { url, error in
+            guard !didRespond else {
                 return
             }
-            responded = true
-            
+            didRespond = true
+
+            // Discard auth session
+            self.asWebAuthSession = nil
             self.sfAuthSession = nil
+            
             guard error == nil, let queryParams = url?.queryParameters, let authResponse = queryParams["authResponse"] else {
                 completion(AuthResult.failed(error))
                 return
@@ -88,7 +111,16 @@ public enum BlockstackConstants {
                                     transitPrivateKey: transitKey,
                                     completion: completion)
         }
-        self.sfAuthSession?.start()
+        
+        if #available(iOS 12.0, *) {
+            let authSession = ASWebAuthenticationSession(url: url, callbackURLScheme: redirectURI, completionHandler: completion)
+            authSession.start()
+            self.asWebAuthSession = authSession
+        } else {
+            // Fallback on earlier versions
+            self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURI, completionHandler: completion)
+            self.sfAuthSession?.start()
+        }
     }
     
     /**
@@ -166,11 +198,19 @@ public enum BlockstackConstants {
      WARNING: This will reset the keychain for all apps using Blockstack sign in. Apps that are already signed in will not be affected, but the user will have to reenter their 12 word seed to sign in to any new apps.
      */
     @objc public func promptClearDeviceKeychain() {
-        // TODO: Use ASWebAuthenticationSession for iOS 12
-        self.sfAuthSession = SFAuthenticationSession(url: URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)")!, callbackURLScheme: nil) { _, error in
-            self.sfAuthSession = nil
+        let url = URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)")!
+        if #available(iOS 12.0, *) {
+            let authSession = ASWebAuthenticationSession(url: url, callbackURLScheme: nil) { _, _ in
+                self.asWebAuthSession = nil
+            }
+            authSession.start()
+            self.asWebAuthSession = authSession
+        } else {
+            self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: nil) { _, _ in
+                self.sfAuthSession = nil
+            }
+            self.sfAuthSession?.start()
         }
-        self.sfAuthSession?.start()
     }
     
     // - MARK: Profiles
@@ -221,7 +261,7 @@ public enum BlockstackConstants {
                 throw error
             }
         } else {
-            guard let jsonString = JSONTokens().decodeToken(token: token),
+            guard let jsonString = JSONTokensJS().decodeToken(token: token),
                 let data = jsonString.data(using: .utf8) else {
                     return nil
             }
@@ -236,7 +276,7 @@ public enum BlockstackConstants {
      - returns: WrappedToken object containing `token` and `decodedToken`
      */
     public func wrapProfileToken(token: String) -> ProfileTokenFile? {
-        guard let jsonString = JSONTokens().decodeToken(token: token),
+        guard let jsonString = JSONTokensJS().decodeToken(token: token),
             let data = jsonString.data(using: .utf8) else {
                 return nil
         }
@@ -287,7 +327,7 @@ public enum BlockstackConstants {
             let payloadJSON = payloadJSONObject as? [String: Any] else {
                 return nil
         }
-        return JSONTokens().signToken(payload: payloadJSON, privateKey: privateKey, algorithm: signingAlgorithm)
+        return JSONTokensJS().signToken(payload: payloadJSON, privateKey: privateKey, algorithm: signingAlgorithm)
     }
     
     /**
@@ -298,7 +338,7 @@ public enum BlockstackConstants {
      - throws: Throws an error if token verification fails
      */
     public func verifyProfileToken(token: String, publicKeyOrAddress: String) throws -> ProfileToken {
-        let jsonTokens = JSONTokens()
+        let jsonTokens = JSONTokensJS()
         guard let jsonString = jsonTokens.decodeToken(token: token),
             let data = jsonString.data(using: .utf8),
             let decodedToken = try? JSONDecoder().decode(ProfileToken.self, from: data),
@@ -622,4 +662,10 @@ public enum BlockstackConstants {
         }
         return Encryption.decryptECIES(cipherObjectJSONString: content, privateKey: key)
     }
+
+    // MARK: - Private
+    
+    
+    private var asWebAuthSession: Any? // ASWebAuthenticationSession
+    private var sfAuthSession : SFAuthenticationSession?
 }
