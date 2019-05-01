@@ -304,7 +304,7 @@
                                     <constraint firstAttribute="width" constant="250" id="jfc-Ig-Glt"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recall is the most secure, free, end-to-end encrypted and open-source alternative to Googel Photos." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRC-nd-JUw">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recall is the most secure, free, end-to-end encrypted and open-source alternative to Google Photos." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRC-nd-JUw">
                                 <rect key="frame" x="41" y="463" width="292" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="2zr-y6-aN2"/>
