@@ -15,8 +15,10 @@ class Photo {
     var orientation : Int?
     var takenAt : Date?
     var uploadedAt : Date?
+    var latitude : Double?
+    var longitude : Double?
     
-    init(photoPath: String?, compressedPhotoPath: String?, uuid: String?, orientation: Int?, takenAt: Double? = nil, uploadedAt: Double? = nil) {
+    init(photoPath: String?, compressedPhotoPath: String?, uuid: String?, orientation: Int?, takenAt: Double? = nil, uploadedAt: Double? = nil, latitude: Double? = nil, longitude: Double? = nil) {
         if let photoPath = photoPath {
             self.photoPath = photoPath
         }
@@ -36,6 +38,13 @@ class Photo {
         if let uploadedAt = uploadedAt {
             let date = Date(timeIntervalSince1970: TimeInterval(uploadedAt) / 1000)
             self.uploadedAt = date
+        }
+        
+        if let latitude = latitude {
+            self.latitude = latitude
+        }
+        if let longitude = longitude {
+            self.longitude = longitude
         }
     }
     

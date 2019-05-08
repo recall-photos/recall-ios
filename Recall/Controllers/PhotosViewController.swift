@@ -72,7 +72,9 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
                                             uuid: photo["uuid"] as? String,
                                             orientation: photo["orientation"] as? Int,
                                             takenAt: photo["takenAt"] as? Double,
-                                            uploadedAt: photo["uploadedAt"] as? Double )
+                                            uploadedAt: photo["uploadedAt"] as? Double,
+                                            latitude: photo["latitude"] as? Double,
+                                            longitude: photo["longitude"] as? Double)
                             )
                         }
                     }
@@ -261,9 +263,17 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
         var asset: PHAsset?
         asset = info[.phAsset] as? PHAsset
         
-        var takenAt : Date? = nil
+        var takenAt   : Date? = nil
+        var latitude  : Double?
+        var longitude : Double?
+        
         if let asset = asset {
             takenAt = asset.creationDate
+            
+            if let location = asset.location {
+                latitude = location.coordinate.latitude
+                longitude = location.coordinate.longitude
+            }
         }
         
         if let imageData = image.jpeg(.highest), let compressedImageData = image.jpeg(.lowest) {
@@ -307,6 +317,11 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
 
                                 if let takenAtDate = takenAt {
                                     newPhoto.setValue(takenAtDate.millisecondsSince1970, forKey: "takenAt")
+                                }
+                                
+                                if let latitude = latitude, let longitude = longitude {
+                                    newPhoto.setValue(latitude, forKey: "latitude")
+                                    newPhoto.setValue(longitude, forKey: "longitude")
                                 }
 
                                 photosArray.append(newPhoto)
