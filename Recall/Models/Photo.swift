@@ -66,4 +66,22 @@ class Photo {
             return ""
         }
     }
+    
+    func hasCompressedPhoto() -> Bool {
+        if let compressedPhotoPath = self.compressedPhotoPath {
+            if (compressedPhotoPath != "") {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func hasFullResPhoto() -> Bool {
+        if let photoPath = self.photoPath {
+            if (photoPath != "") {
+                return true
+            }
+        }
+        return false
+    }
 }

@@ -18,7 +18,8 @@ class ThumbnailCell: UICollectionViewCell {
     func setPhoto(photo: Photo) {
         self.startLoading()
         Blockstack.shared.getFile(at: photo.minimalPhotoPath(), decrypt: true, completion: { (imageData, error) in
-            if (photo.compressedPhotoPath == self.photo.compressedPhotoPath) {
+            if ((photo.hasCompressedPhoto() && photo.compressedPhotoPath == self.photo.compressedPhotoPath) ||
+                (photo.hasFullResPhoto() && photo.photoPath == self.photo.photoPath)) {
                 if let decryptedResponse = imageData as? DecryptedValue {
                     if let decryptedImage = decryptedResponse.bytes {
                         let imageData = NSData(bytes: decryptedImage, length: decryptedImage.count)
@@ -42,6 +43,8 @@ class ThumbnailCell: UICollectionViewCell {
                         })
                     }
                 }
+            } else {
+                self.stopLoading()
             }
         })
     }
