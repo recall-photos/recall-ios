@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>20</string>
+	<string>21</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -38,7 +38,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Recall would like to save photos to your camera roll.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Recall would like to access your photos.</string>
+	<string>Recall would like to backup your selected photos to your preferred storage provider.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
