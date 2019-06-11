@@ -23,7 +23,7 @@ Clone the project and install the required dependencies via cocoapods with:
 
 `pod install`
 
-Open `Poketto.xcworkspace` and you're ready 🎉
+Open `Recall.xcworkspace` and you're ready 🎉
 
 ### Guidelines
 
