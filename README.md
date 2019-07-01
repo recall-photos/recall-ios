@@ -11,10 +11,6 @@ Recall is an open-source and decentralized alternative to Google Photos built on
 - ~~Search your photos - You will be able to search your photos by location, time and other data~~
 - ~~Share with friends - Share your photos with others, without losing any of the privacy benefits~~
 
-## Roadmap
-
-To get an overview of the current development status head over to [our roadmap](https://github.com/orgs/recall-photos/projects/2).
-
 ## Contribute
 
 ### Setup
@@ -28,6 +24,14 @@ Open `Recall.xcworkspace` and you're ready 🎉
 ### Guidelines
 
 Work in progress 🏗
+
+## Project board
+
+You can keep track of what is happening on this project by heading over to our [project board](https://github.com/orgs/recall-photos/projects/1) here in github.
+
+## Roadmap
+
+To get an overview of the current development status head over to [our roadmap](https://github.com/orgs/recall-photos/projects/2).
 
 ## License
 
