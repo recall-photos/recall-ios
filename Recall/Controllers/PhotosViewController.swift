@@ -12,6 +12,7 @@ import DTPhotoViewerController
 import AVFoundation
 import Photos
 import SVProgressHUD
+import xxHash_Swift
 
 private let reuseIdentifier = "photoCell"
 
@@ -86,12 +87,17 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
                     return first.key > second.key
                 })
                 
+                print("HERE")
+//                self.checkAuthorizationForPhotoLibraryAndGet()
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                     self.collectionView?.reloadData()
                     self.refreshControl.endRefreshing()
                 })
             } else {
                 // Could not fetch photos.json file
+                print("HERE no file")
+                self.checkAuthorizationForPhotoLibraryAndGet()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                     self.refreshControl.endRefreshing()
                 })
@@ -152,12 +158,29 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
         return UICollectionReusableView()
     }
     
+    func getAssetThumbnail(asset: PHAsset) -> UIImage {
+        let manager = PHImageManager.default()
+        let option = PHImageRequestOptions()
+        var thumbnail = UIImage()
+        option.isSynchronous = true
+        manager.requestImage(for: asset, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFit, options: option, resultHandler: {(result, info)->Void in
+            thumbnail = result!
+        })
+        return thumbnail
+    }
+    
     private func getPhotosAndVideos() {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         fetchOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
-        let images = PHAsset.fetchAssets(with: fetchOptions)
-        print(images.count)
+        let assets = PHAsset.fetchAssets(with: fetchOptions)
+        print(assets.count)
+        
+        assets.enumerateObjects { (asset, index, _) in
+            let image = self.getAssetThumbnail(asset: asset)
+            print(xxHash32.digest(image.pngData()!))
+            self.uploadAsset(asset: asset)
+        }
     }
     
     private func checkAuthorizationForPhotoLibraryAndGet() {
@@ -252,6 +275,107 @@ class PhotosViewController: UICollectionViewController, SimplePhotoViewerControl
                 })
             }
         })
+    }
+    
+    func getImageFromAsset(asset: PHAsset) -> UIImage {
+        let manager = PHImageManager.default()
+        let option = PHImageRequestOptions()
+        option.resizeMode = .exact
+        var thumbnail = UIImage()
+        option.isSynchronous = true
+        manager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: option, resultHandler: {(result, info)->Void in
+            thumbnail = result!
+        })
+        return thumbnail
+    }
+    
+    func uploadAsset(asset: PHAsset) {
+        var takenAt   : Date? = nil
+        var latitude  : Double?
+        var longitude : Double?
+        
+        takenAt = asset.creationDate
+        
+        if let location = asset.location {
+            latitude = location.coordinate.latitude
+            longitude = location.coordinate.longitude
+        }
+        
+        let image = getImageFromAsset(asset: asset)
+        
+        if let imageData = image.jpeg(.highest), let compressedImageData = image.jpeg(.lowest) {
+            let bytes = imageData.bytes
+            let compressedBytes = compressedImageData.bytes
+            
+            let uuid = UUID().uuidString
+            let imageName = "\(uuid).jpg"
+            
+            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.clear)
+                SVProgressHUD.show()
+            })
+            
+            Blockstack.shared.getFile(at: "photos.json", decrypt: true, completion: { (response, error) in
+                var photosArray : Array<NSDictionary> = []
+                
+                if (response != nil) {
+                    // Populate with latest photos
+                    if let decryptedResponse = response as? DecryptedValue {
+                        let responseString = decryptedResponse.plainText
+                        
+                        if let parsedPhotos = responseString!.parseJSONString as? Array<Any> {
+                            photosArray = parsedPhotos as! Array<NSDictionary>
+                        }
+                    }
+                } else if (error != nil) {
+                    let msg = error?.localizedDescription
+                    self.triggerErrorWith(title: "Error", content: msg!)
+                }
+                
+                Blockstack.shared.putFile(to: "compressed_images/\(imageName)", bytes: compressedBytes, encrypt: true, completion: { (file, error) in
+                    if (error == nil) {
+                        Blockstack.shared.putFile(to: "images/\(imageName)", bytes: bytes, encrypt: true, completion: { (file, error) in
+                            if (error == nil) {
+                                let newPhoto = [
+                                    "path": "images/\(imageName)",
+                                    "uploadedAt": Date().millisecondsSince1970,
+                                    "uuid": uuid,
+                                    "compressedPath": "compressed_images/\(imageName)",
+                                    "name": imageName
+                                    ] as NSMutableDictionary
+                                
+                                if let takenAtDate = takenAt {
+                                    newPhoto.setValue(takenAtDate.millisecondsSince1970, forKey: "takenAt")
+                                }
+                                
+                                if let latitude = latitude, let longitude = longitude {
+                                    newPhoto.setValue(latitude, forKey: "latitude")
+                                    newPhoto.setValue(longitude, forKey: "longitude")
+                                }
+                                
+                                photosArray.append(newPhoto)
+                                
+                                Blockstack.shared.putFile(to: "photos.json", text: self.json(from: photosArray)!, encrypt: true, completion: { (file, error) in
+                                    if (error == nil) {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                            SVProgressHUD.dismiss()
+                                            self.fetchData()
+                                            print("Uploaded photo")
+                                        })
+                                    } else {
+                                        self.triggerErrorWith(title: "Failed to upload photo", content: "There was an error uploading your photo. Please try again.")
+                                    }
+                                })
+                            } else {
+                                self.triggerErrorWith(title: "Failed to upload photo", content: "There was an error uploading your photo. Please try again.")
+                            }
+                        })
+                    } else {
+                        self.triggerErrorWith(title: "Failed to upload photo", content: "There was an error uploading your photo. Please try again.")
+                    }
+                })
+            })
+        }
     }
     
     func upload(info: [UIImagePickerController.InfoKey : Any]) {

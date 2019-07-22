@@ -5,12 +5,14 @@ PODS:
   - DTPhotoViewerController (1.2.5)
   - MaterialActivityIndicator (0.0.4)
   - SVProgressHUD (2.2.5)
+  - xxHash-Swift (1.0.11)
 
 DEPENDENCIES:
   - Blockstack
   - DTPhotoViewerController
   - MaterialActivityIndicator
   - SVProgressHUD
+  - xxHash-Swift
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -19,6 +21,7 @@ SPEC REPOS:
     - DTPhotoViewerController
     - MaterialActivityIndicator
     - SVProgressHUD
+    - xxHash-Swift
 
 SPEC CHECKSUMS:
   Blockstack: 872c6a86c8fe80487f439966303dd2cb8d888603
@@ -26,7 +29,8 @@ SPEC CHECKSUMS:
   DTPhotoViewerController: 369a36bddc3dc2cb67c5423a134111c270917786
   MaterialActivityIndicator: f5ea8ece4def5fcc658909f381bcefc341e2b99c
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  xxHash-Swift: 027d80cc731b5e47043d6ab11dc286abdd006d38
 
-PODFILE CHECKSUM: 455e70afc87ef201cbc3ca8bb808ba3fb80f6184
+PODFILE CHECKSUM: 1107357ede262ef4918988cb84b7b920663fe55f
 
 COCOAPODS: 1.6.1

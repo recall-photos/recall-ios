@@ -6,4 +6,5 @@ target 'Recall' do
   pod 'DTPhotoViewerController'
   pod 'SVProgressHUD'
   pod 'MaterialActivityIndicator'
+  pod 'xxHash-Swift'
 end
