@@ -2,6 +2,8 @@
 
 ![Dashboard](https://raw.githubusercontent.com/recall-photos/recall-ios/master/Screenshots.png)
 
+### [This app has been discontinued!]
+
 Recall is an open-source and decentralized alternative to Google Photos built on top of Blockstack. Photos are stored encrypted with the user's private key and therefore not accessible to anyone else.
 
 ## Features
